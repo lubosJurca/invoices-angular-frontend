@@ -1,5 +1,7 @@
 import {
   ApplicationConfig,
+  inject,
+  provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
 } from '@angular/core';
@@ -8,11 +10,16 @@ import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import Nora from '@primeuix/themes/nora';
-import {  provideHttpClient } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
+import { AuthService } from './core/auth/auth';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideAppInitializer(() => {
+      const authService = inject(AuthService);
+      return authService.initializeAuth(); // Now accessible!
+    }),
     provideHttpClient(),
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
@@ -29,6 +36,6 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
-    MessageService
-  ]
+    MessageService,
+  ],
 };

@@ -1,0 +1,42 @@
+<p-drawer [(visible)]="visible" header="AI Assistent">
+  <p class="text-sm text-gray-400 mb-4">
+    Your AI assistant is here to help you with any questions you have. Just type
+    your question below and let the AI do the rest!
+  </p>
+  <p-floatlabel variant="on">
+    <textarea
+      pTextarea
+      id="over_label"
+      [(ngModel)]="inputText"
+      rows="5"
+      cols="30"
+      maxlength="150"
+      style="resize: none"
+      class="h-full w-full space-y"
+    ></textarea>
+    <label for="on_label">Your Question</label>
+  </p-floatlabel>
+
+  <p-button
+    styleClass="w-full mt-2 mb-4 "
+    [disabled]="isLoading"
+    (onClick)="submitQuestion()"
+  >
+    @if (isLoading) {
+    <p-progress-spinner ariaLabel="loading" class="h-8"></p-progress-spinner>
+    } @else { Send }
+  </p-button>
+
+  <!-- @if(isLoading){
+  <div class="card flex justify-center my-2">
+    <p-progress-spinner ariaLabel="loading" class="h-8" />
+  </div>
+  } @else {
+  <p-button styleClass="w-full mt-2 mb-4 h-8" (onClick)="submitQuestion()"
+    >Send</p-button
+  >
+  } -->
+
+  <p class="border-t-2 pt-2 italic">{{(outputText$ | async)}}</p>
+</p-drawer>
+<p-button (click)="visible = true" label="AI Assistent" />

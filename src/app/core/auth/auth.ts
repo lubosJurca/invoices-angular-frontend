@@ -1,12 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { User } from '../../shared/models/models';
 import { environment } from '../../environments/enviroment';
+import { Router } from '@angular/router';
 
 interface AuthResponse {
-  user?: User;
+  user: User;
   message?: string;
+}
+
+interface LogoutResponse {
+  message: string;
 }
 
 @Injectable({
@@ -17,32 +22,28 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor() {
-    this.initializeAuth();
-  }
-
-  private initializeAuth() {
-    this.verifyTokenWithBackend().subscribe({
-      next: (response) => {
-        this.currentUserSubject.next(response.user);
-        console.log('Token verified successfully:', response.message);
-      },
-      error: (error) => {
-        console.error('Token verification failed:', error);
-        // Token invalid, expired, or doesn't exist
-        this.currentUserSubject.next(null);
-
-        if (error.status === 401) {
-          this.logout();
-        }
-      },
-    });
-  }
-
-  private verifyTokenWithBackend(): Observable<any> {
-    return this.http.get(environment.apiUrl + '/user/current-user', {
-      withCredentials: true, // This sends the cookie automatically
-    });
+  public initializeAuth(): Observable<boolean> {
+    return this.http
+      .get<AuthResponse>(environment.apiUrl + '/users/current-user', {
+        withCredentials: true,
+      })
+      .pipe(
+        tap({
+          next: (response) => {
+            this.currentUserSubject.next(response.user);
+            console.log('Token verified successfully:', response.message);
+          },
+          error: (error) => {
+            console.error('Token verification failed:', error);
+            this.currentUserSubject.next(null);
+            if (error.status === 401 || error.status === 403) {
+              this.logout();
+            }
+          },
+        }),
+        map(() => true),
+        catchError(() => of(false))
+      );
   }
 
   registerUser(user: {
@@ -81,16 +82,13 @@ export class AuthService {
     return this.currentUser$.pipe(map((user) => user !== null));
   }
 
-  logout() {
-    this.currentUserSubject.next(null);
-    this.http
-      .post(
-        environment.apiUrl + '/auth/logout',
-        {},
-        {
-          withCredentials: true,
-        }
-      )
-      .subscribe();
+  logout(): Observable<LogoutResponse> {
+    return this.http
+      .post<LogoutResponse>(environment.apiUrl + '/auth/logout', {})
+      .pipe(
+        tap((response) => {
+          this.currentUserSubject.next(null);
+        })
+      );
   }
 }
