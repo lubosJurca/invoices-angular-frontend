@@ -17,12 +17,9 @@ export class Data {
 
   constructor() {
     this.auth.currentUser$.subscribe((user) => {
-      console.log('User changed:', user);
       if (user) {
-        console.log('Fetching invoice data for user');
         this.getUserData();
       } else {
-        console.log('No user logged in, clearing invoice data');
         this.currentInvoiceData.next(null);
       }
     });
@@ -34,7 +31,6 @@ export class Data {
       })
       .pipe(
         tap((response: GetAllInvoicesResponse) => {
-          console.log('Fetched invoice data:', response);
           this.currentInvoiceData.next(response);
         }),
         catchError((error) => {
