@@ -27,16 +27,8 @@
     } @else { Send }
   </p-button>
 
-  <!-- @if(isLoading){
-  <div class="card flex justify-center my-2">
-    <p-progress-spinner ariaLabel="loading" class="h-8" />
-  </div>
-  } @else {
-  <p-button styleClass="w-full mt-2 mb-4 h-8" (onClick)="submitQuestion()"
-    >Send</p-button
-  >
-  } -->
-
+  @if(outputText$ | async) {
   <p class="border-t-2 pt-2 italic">{{(outputText$ | async)}}</p>
+  }
 </p-drawer>
 <p-button (click)="visible = true" label="AI Assistent" />

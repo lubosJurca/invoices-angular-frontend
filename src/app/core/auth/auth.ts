@@ -3,7 +3,6 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { User } from '../../shared/models/models';
 import { environment } from '../../environments/enviroment';
-import { Router } from '@angular/router';
 
 interface AuthResponse {
   user: User;

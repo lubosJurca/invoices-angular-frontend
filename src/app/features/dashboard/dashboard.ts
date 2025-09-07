@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Navbar } from '../navbar/navbar';
+import { Data } from '../../shared/services/data';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,4 +8,6 @@ import { Navbar } from '../navbar/navbar';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
-export class Dashboard {}
+export class Dashboard {
+  private data = inject(Data);
+}

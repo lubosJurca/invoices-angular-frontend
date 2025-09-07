@@ -5,3 +5,47 @@ export type User = {
   password: string;
   createdAt: Date;
 };
+
+export interface InvoiceAddress {
+  street: string;
+  city: string;
+  country: string;
+  postCode?: string;
+}
+
+export interface InvoiceItem {
+  name: string;
+  quantity: number;
+  price: number;
+}
+
+export interface Invoice {
+  _id?: string;
+  createdAt: Date | string;
+  dueDate: Date | string;
+
+  description: string;
+  paymentTerms: number;
+  clientName: string;
+  clientEmail: string;
+  status: string;
+
+  senderAddress: InvoiceAddress;
+  clientAddress: InvoiceAddress;
+
+  items: InvoiceItem[];
+  total: number;
+
+  createdBy: string;
+  updatedAt?: Date | string;
+}
+
+export interface GetAllInvoicesResponse {
+  totalInvoices: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  data: Invoice[];
+  currentPage: number;
+  message: string;
+}

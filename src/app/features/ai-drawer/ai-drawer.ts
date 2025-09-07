@@ -31,9 +31,7 @@ interface AiResponse {
 export class AiDrawer {
   public visible: boolean = false;
   public inputText: string = '';
-  public outputText$: BehaviorSubject<string> = new BehaviorSubject<string>(
-    'Here is where the answer will appear...'
-  );
+  public outputText$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public isLoading: boolean = false;
 
   private http = inject(HttpClient);
