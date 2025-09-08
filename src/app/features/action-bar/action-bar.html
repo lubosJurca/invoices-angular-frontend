@@ -1,1 +1,23 @@
-<p>action-bar works!</p>
+<div class="flex justify-evenly items-center mb-6 p-2">
+  <div>
+    <h2 class="font-bold text-2xl">Invoices</h2>
+
+    @if(totalInvoices === 0) {
+    <p>No invoices found</p>
+    } @else if (totalInvoices === 1) {
+    <p>1 invoice found</p>
+    } @else {
+    <p>{{ totalInvoices }} invoices found</p>
+    }
+  </div>
+  <div class="card flex justify-center">
+    <p-select
+      [options]="statusOptions"
+      [(ngModel)]="selectedStatus"
+      (onChange)="filterData()"
+      optionLabel="label"
+      placeholder="Filter"
+      class="w-full md:w-56"
+    />
+  </div>
+</div>
