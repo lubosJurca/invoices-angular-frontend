@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Data } from '../../shared/services/data';
+import { DataService } from '../../shared/services/data';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
 
@@ -10,19 +10,20 @@ import { Select } from 'primeng/select';
   styleUrl: './action-bar.css',
 })
 export class ActionBar {
-  private data = inject(Data);
+  private data = inject(DataService);
   public totalInvoices: number = 0;
-  public selectedStatus: string = 'all';
-  public statusOptions = new Array<{ label: string; value: string }>();
+  public statusOptions = [
+    { label: 'All', value: 'all' },
+    { label: 'Draft', value: 'draft' },
+    { label: 'Pending', value: 'pending' },
+    { label: 'Paid', value: 'paid' },
+  ];
 
-  filterData() {
-    console.log('Filtering data by status:', this.selectedStatus);
-
-    this.data.getUserData(this.selectedStatus);
+  onFilterChange(event: any) {
+    this.data.setFilterStatus(event.value);
   }
 
   constructor() {
-    this.statusOptions = this.data.statusOptions;
     this.data.currentInvoiceData$.subscribe((data) => {
       if (data) {
         this.totalInvoices = data.totalInvoices;

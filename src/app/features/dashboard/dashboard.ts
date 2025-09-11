@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Navbar } from '../navbar/navbar';
-import { Data } from '../../shared/services/data';
+import { DataService } from '../../shared/services/data';
 import { ActionBar } from '../action-bar/action-bar';
 
 @Component({
@@ -10,5 +10,5 @@ import { ActionBar } from '../action-bar/action-bar';
   styleUrl: './dashboard.css',
 })
 export class Dashboard {
-  private data = inject(Data);
+  private data = inject(DataService);
 }
