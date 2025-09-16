@@ -6,14 +6,13 @@ import {
   BehaviorSubject,
   catchError,
   combineLatest,
-  EMPTY,
   Observable,
   of,
   switchMap,
-  takeUntil,
   tap,
 } from 'rxjs';
 import { AuthService } from '../../core/auth/auth';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface FilterOption {
   label: string;
@@ -24,51 +23,50 @@ interface FilterOption {
   providedIn: 'root',
 })
 export class DataService {
+  private http = inject(HttpClient);
+  private auth = inject(AuthService);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+
   private currentInvoiceData =
     new BehaviorSubject<GetAllInvoicesResponse | null>(null);
   public currentInvoiceData$ = this.currentInvoiceData.asObservable();
-  private http = inject(HttpClient);
-  private auth = inject(AuthService);
   private filterStatus = new BehaviorSubject<string>('all');
   public filterStatus$ = this.filterStatus.asObservable();
-
-  // constructor() {
-  //   this.filterStatus$
-  //     .pipe(switchMap(() => this.fetchInvoice()))
-  //     .subscribe((response) => {
-  //       if (response) {
-  //         this.currentInvoiceData.next(response);
-  //         console.log('Fetched invoice data on filter change:', response);
-  //       }
-  //     });
-
-  //   this.auth.currentUser$.subscribe((user) => {
-  //     if (user) {
-  //       console.log('User logged in, fetching invoices...');
-  //       this.fetchInvoice().subscribe();
-  //     } else {
-  //       this.currentInvoiceData.next(null);
-  //     }
-  //   });
-  // }
+  private page = new BehaviorSubject<number>(1);
+  public page$ = this.page.asObservable();
 
   constructor() {
-    console.log('🏗️ Constructor called');
+    this.activatedRoute.queryParams.subscribe((params) => {
+      const initialFilter = params['filter'] || 'all';
+      const initialPage = Number(params['page']) || 1;
 
-    combineLatest([this.auth.currentUser$, this.filterStatus$])
+      this.filterStatus.next(initialFilter);
+      this.page.next(initialPage);
+      console.log('Initialized from query params:', {
+        initialFilter,
+        initialPage,
+      });
+    });
+
+    combineLatest([this.auth.currentUser$, this.filterStatus$, this.page$])
       .pipe(
-        tap(([user, filter]) =>
-          console.log('🔄 Auth/Filter change:', { user: !!user, filter })
-        ),
+        tap(([user, filter, page]) => {
+          console.log('🔄 Auth/Filter change:', { user: !!user, filter, page });
+          if (user) {
+            this.router.navigate(['/dashboard'], {
+              queryParams: { filter, page },
+            });
+          }
+        }),
         switchMap(
-          ([user, filter]): Observable<GetAllInvoicesResponse | null> => {
-            // Add return type here too
+          ([user, filter, page]): Observable<GetAllInvoicesResponse | null> => {
             if (user) {
-              console.log('✅ User exists, calling fetchInvoice');
-              return this.fetchInvoice();
+              return this.fetchInvoice(filter, page);
             } else {
               console.log('❌ No user, clearing data');
               this.currentInvoiceData.next(null);
+              this.page.next(1);
               return of(null);
             }
           }
@@ -90,18 +88,14 @@ export class DataService {
     this.filterStatus.next(filter.value);
   }
 
-  private fetchInvoice(): Observable<GetAllInvoicesResponse | null> {
-    // Add | null here
-    console.log('🔥 fetchInvoice() method called!');
-
+  private fetchInvoice(
+    filter: string,
+    page: number
+  ): Observable<GetAllInvoicesResponse | null> {
     let params = new HttpParams();
 
-    if (this.filterStatus.value !== 'all') {
-      params = params.set('filter', this.filterStatus.value);
-      console.log('Set filter param:', this.filterStatus.value);
-    } else {
-      console.log('Filter is "all", not sending filter param');
-    }
+    params = params.set('filter', filter);
+    params = params.set('page', page.toString());
 
     console.log('About to make HTTP request with params:', params.toString());
 
@@ -112,7 +106,7 @@ export class DataService {
       })
       .pipe(
         tap((response) => {
-          console.log('✅ HTTP request successful:', response);
+          console.log('HTTP request successful:', response);
         }),
         catchError((error) => {
           console.error('❌ HTTP Error:', error);
@@ -120,35 +114,4 @@ export class DataService {
         })
       );
   }
-
-  // public getUserData(
-  //   status: string = 'all',
-  //   page: number = 1,
-  //   limit: number = 10,
-  //   skip: number = 1
-  // ): void {
-  //   this.http
-  //     .get<GetAllInvoicesResponse>(
-  //       environment.apiUrl +
-  //         `/invoices/?filter=${status}&page=${page}&limit=${limit}&skip=${skip}`,
-  //       {
-  //         withCredentials: true,
-  //       }
-  //     )
-  //     .pipe(
-  //       tap((response: GetAllInvoicesResponse) => {
-  //         this.currentInvoiceData.next(response);
-  //       }),
-  //       catchError((error) => {
-  //         console.error('Error fetching invoice data:', error);
-  //         return EMPTY;
-  //       }),
-  //       takeUntil(this.auth.currentUser$.pipe(tap((user) => !user)))
-  //     )
-  //     .subscribe();
-  // }
-
-  // public getFilteredData(){ {
-  //   this.http.get<GetAllInvoicesResponse>(environment.apiUrl + '/invoices/?filter='+status, {withCredentials: true,})
-  // }
 }
