@@ -51,9 +51,7 @@ export class AuthService {
     password: string;
   }): Observable<any> {
     return this.http
-      .post<AuthResponse>(environment.apiUrl + '/users/register', user, {
-        withCredentials: true,
-      })
+      .post<AuthResponse>(environment.apiUrl + '/users/register', user)
       .pipe(
         tap((response) => {
           if (response.user) {
@@ -65,13 +63,13 @@ export class AuthService {
 
   loginUser(user: { email: string; password: string }): Observable<any> {
     return this.http
-      .post<AuthResponse>(environment.apiUrl + '/auth/login', user, {
-        withCredentials: true,
-      })
+      .post<AuthResponse>(environment.apiUrl + '/auth/login', user)
       .pipe(
         tap((response) => {
           if (response.user) {
             this.currentUserSubject.next(response.user);
+            console.log('User logged in successfully:', response.user.email);
+            console.log('Current user: ', this.currentUserSubject.value?.email);
           }
         })
       );
@@ -87,7 +85,20 @@ export class AuthService {
       .pipe(
         tap((response) => {
           this.currentUserSubject.next(null);
+          console.log('User logged out successfully:', response.message);
         })
       );
+  }
+
+  private getToken(): string | null {
+    return sessionStorage.getItem('auth_token');
+  }
+
+  private setToken(token: string): void {
+    sessionStorage.setItem('auth_token', token);
+  }
+
+  private removeToken(): void {
+    sessionStorage.removeItem('auth_token');
   }
 }

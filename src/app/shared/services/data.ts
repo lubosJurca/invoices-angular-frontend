@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, OnInit } from '@angular/core';
 import { environment } from '../../environments/enviroment';
 import { GetAllInvoicesResponse, User } from '../models/models';
 import {
@@ -14,15 +14,10 @@ import {
 import { AuthService } from '../../core/auth/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 
-interface FilterOption {
-  label: string;
-  value: string;
-}
-
 @Injectable({
   providedIn: 'root',
 })
-export class DataService {
+export class DataService implements OnInit {
   private http = inject(HttpClient);
   private auth = inject(AuthService);
   private router = inject(Router);
@@ -37,28 +32,23 @@ export class DataService {
   public page$ = this.page.asObservable();
 
   constructor() {
-    this.activatedRoute.queryParams.subscribe((params) => {
-      const initialFilter = params['filter'] || 'all';
-      const initialPage = Number(params['page']) || 1;
-
-      this.filterStatus.next(initialFilter);
-      this.page.next(initialPage);
-      console.log('Initialized from query params:', {
-        initialFilter,
-        initialPage,
-      });
-    });
-
+    // combineLatest to react to changes in auth, filter, or page
     combineLatest([this.auth.currentUser$, this.filterStatus$, this.page$])
       .pipe(
         tap(([user, filter, page]) => {
           console.log('🔄 Auth/Filter change:', { user: !!user, filter, page });
+          // Navigate to dashboard with updated query params
+          // it's inside tap to avoid affecting the stream
           if (user) {
             this.router.navigate(['/dashboard'], {
               queryParams: { filter, page },
             });
+          } else {
+            this.router.navigate(['/']); // if no user, go to home
           }
         }),
+        // switchMap to fetch data based on the latest values
+        // if user is null, return of(null) to clear data
         switchMap(
           ([user, filter, page]): Observable<GetAllInvoicesResponse | null> => {
             if (user) {
@@ -66,17 +56,18 @@ export class DataService {
             } else {
               console.log('❌ No user, clearing data');
               this.currentInvoiceData.next(null);
-              this.page.next(1);
               return of(null);
             }
           }
         )
       )
+      // subscribe to update currentInvoiceData
       .subscribe({
         next: (response) => {
           console.log('📦 Constructor subscription received:', !!response);
           if (response) {
             this.currentInvoiceData.next(response);
+            console.log('✅ Data updated:', response);
           }
         },
         error: (error) =>
@@ -84,8 +75,24 @@ export class DataService {
       });
   }
 
-  setFilterStatus(filter: FilterOption) {
-    this.filterStatus.next(filter.value);
+  ngOnInit() {
+    // Initialize filter and page from query params
+    // Has to be in ngOnInit because constructor is too early
+    this.activatedRoute.queryParams.subscribe((params) => {
+      const initialFilter = params['filter'] || 'all';
+      const initialPage = Number(params['page']) || 1;
+
+      this.filterStatus.next(initialFilter);
+      this.page.next(initialPage);
+      console.log('Initial values from query params:', {
+        initialFilter,
+        initialPage,
+      });
+    });
+  }
+
+  setFilterStatus(filter: string) {
+    this.filterStatus.next(filter);
   }
 
   private fetchInvoice(
@@ -101,7 +108,6 @@ export class DataService {
 
     return this.http
       .get<GetAllInvoicesResponse>(`${environment.apiUrl}/invoices/`, {
-        withCredentials: true,
         params: params,
       })
       .pipe(

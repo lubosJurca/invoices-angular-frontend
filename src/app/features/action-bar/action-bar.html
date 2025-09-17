@@ -13,9 +13,9 @@
   <div class="card flex justify-center">
     <p-select
       [options]="statusOptions"
+      [(ngModel)]="filterStatus$"
       (onChange)="onFilterChange($event)"
-      optionLabel="label"
-      placeholder="Filter"
+      placeholder="All"
       class="w-full md:w-56"
     />
   </div>

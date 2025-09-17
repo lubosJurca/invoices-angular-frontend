@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { DataService } from '../../shared/services/data';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
@@ -9,8 +9,10 @@ import { Select } from 'primeng/select';
   templateUrl: './action-bar.html',
   styleUrl: './action-bar.css',
 })
-export class ActionBar {
+export class ActionBar implements OnInit {
   private data = inject(DataService);
+  private changeDetectionService = inject(ChangeDetectorRef);
+  public filterStatus$ = this.data.filterStatus$;
   public totalInvoices: number = 0;
   public statusOptions = [
     { label: 'All', value: 'all' },
@@ -23,10 +25,15 @@ export class ActionBar {
     this.data.setFilterStatus(event.value);
   }
 
-  constructor() {
+  // Lifecycle hook to subscribe to invoice data changes
+  // and update totalInvoices accordingly
+  // has to be ngOnInit because constructor is too early
+  // changeDetectionService is needed to update the view
+  ngOnInit(): void {
     this.data.currentInvoiceData$.subscribe((data) => {
       if (data) {
         this.totalInvoices = data.totalInvoices;
+        this.changeDetectionService.detectChanges();
       }
     });
   }
