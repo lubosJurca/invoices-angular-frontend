@@ -12,7 +12,7 @@ import { providePrimeNG } from 'primeng/config';
 import Nora from '@primeuix/themes/nora';
 import { provideHttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
-import { AuthService } from './core/auth/auth';
+import { AuthService } from './core/auth/auth.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [

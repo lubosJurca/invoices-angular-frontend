@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { DataService } from '../../shared/services/data';
+import { DataService } from '../../shared/services/data.service';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
 

@@ -1,10 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Menubar } from 'primeng/menubar';
-import { AuthService } from '../../core/auth/auth';
+import { AuthService } from '../../core/auth/auth.service';
 import { Router } from '@angular/router';
 import { Button } from 'primeng/button';
-import { ToastService } from '../../shared/services/toast';
+import { ToastService } from '../../shared/services/toast.service';
 import { AiDrawer } from '../ai-drawer/ai-drawer';
 
 @Component({

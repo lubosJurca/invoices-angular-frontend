@@ -11,7 +11,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { AuthService } from '../../core/auth/auth';
+import { AuthService } from '../../core/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
@@ -109,6 +109,7 @@ export class DataService implements OnInit {
     return this.http
       .get<GetAllInvoicesResponse>(`${environment.apiUrl}/invoices/`, {
         params: params,
+        headers: this.auth.getAuthHeaders(),
       })
       .pipe(
         tap((response) => {

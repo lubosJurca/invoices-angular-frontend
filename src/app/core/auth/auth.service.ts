@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { User } from '../../shared/models/models';
@@ -7,6 +7,7 @@ import { environment } from '../../environments/enviroment';
 interface AuthResponse {
   user: User;
   message?: string;
+  token: string;
 }
 
 interface LogoutResponse {
@@ -22,9 +23,17 @@ export class AuthService {
   public currentUser$ = this.currentUserSubject.asObservable();
 
   public initializeAuth(): Observable<boolean> {
+    const token = this.getToken();
+
+    // If no token, user is not authenticated
+    if (!token) {
+      this.currentUserSubject.next(null);
+      return of(false);
+    }
+
     return this.http
       .get<AuthResponse>(environment.apiUrl + '/users/current-user', {
-        withCredentials: true,
+        headers: this.getAuthHeaders(),
       })
       .pipe(
         tap({
@@ -36,12 +45,15 @@ export class AuthService {
             console.error('Token verification failed:', error);
             this.currentUserSubject.next(null);
             if (error.status === 401 || error.status === 403) {
-              this.logout();
+              this.removeToken();
             }
           },
         }),
         map(() => true),
-        catchError(() => of(false))
+        catchError(() => {
+          this.logout();
+          return of(false);
+        })
       );
   }
 
@@ -54,7 +66,8 @@ export class AuthService {
       .post<AuthResponse>(environment.apiUrl + '/users/register', user)
       .pipe(
         tap((response) => {
-          if (response.user) {
+          if (response.user && response.token) {
+            this.setToken(response.token);
             this.currentUserSubject.next(response.user);
           }
         })
@@ -66,10 +79,10 @@ export class AuthService {
       .post<AuthResponse>(environment.apiUrl + '/auth/login', user)
       .pipe(
         tap((response) => {
-          if (response.user) {
+          if (response.user && response.token) {
+            this.setToken(response.token);
             this.currentUserSubject.next(response.user);
             console.log('User logged in successfully:', response.user.email);
-            console.log('Current user: ', this.currentUserSubject.value?.email);
           }
         })
       );
@@ -81,9 +94,14 @@ export class AuthService {
 
   logout(): Observable<LogoutResponse> {
     return this.http
-      .post<LogoutResponse>(environment.apiUrl + '/auth/logout', {})
+      .post<LogoutResponse>(
+        environment.apiUrl + '/auth/logout',
+        {},
+        { headers: this.getAuthHeaders() }
+      )
       .pipe(
         tap((response) => {
+          this.removeToken();
           this.currentUserSubject.next(null);
           console.log('User logged out successfully:', response.message);
         })
@@ -100,5 +118,13 @@ export class AuthService {
 
   private removeToken(): void {
     sessionStorage.removeItem('auth_token');
+  }
+
+  // Get headers with token
+  public getAuthHeaders(): HttpHeaders {
+    const token = this.getToken();
+    return token
+      ? new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      : new HttpHeaders();
   }
 }

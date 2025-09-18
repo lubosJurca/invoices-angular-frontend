@@ -44,11 +44,9 @@ export class AiDrawer {
     const currentInput = this.inputText;
 
     this.http
-      .post<AiResponse>(
-        environment.apiUrl + '/ai/assistant',
-        { inputText: currentInput },
-        { withCredentials: true }
-      )
+      .post<AiResponse>(environment.apiUrl + '/ai/assistant', {
+        inputText: currentInput,
+      })
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => (this.isLoading = false))
