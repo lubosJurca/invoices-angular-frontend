@@ -1,30 +1,147 @@
-<section>
-  <!-- LanguageDropdown: vytvoř Angular komponentu <app-language-dropdown> a vlož sem -->
-  <!-- <app-language-dropdown></app-language-dropdown> -->
+<!-- Hero Section -->
+<section
+  class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center"
+>
+  <div class="container mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Content -->
+      <div class="space-y-8">
+        <div class="space-y-6">
+          <h1
+            class="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight"
+          >
+            Manage your
+            <span
+              class="text-transparent bg-clip-text bg-gradient-to-r from-green-700 to-green-500"
+            >
+              invoices
+            </span>
+            <br />
+            simply and efficiently
+          </h1>
 
-  <div>
-    <div>
-      <h1>
-        Spravujte své faktury
-        <br />
-        <span> jednoduše a efektivně </span>
-      </h1>
-      <p>
-        Snadno vytvářejte, spravujte a sledujte své faktury s naším komplexním
-        nástrojem pro fakturaci. Ideální pro firmy všech velikostí.
-      </p>
-      <ul class="flex gap-2">
-        <li>
-          <a routerLink="/login" pButton>Přihlásit se</a>
-        </li>
-        <li>
-          <a routerLink="/sign-up" pButton>Zaregistrovat se</a>
-        </li>
-      </ul>
+          <p class="text-xl text-gray-600 leading-relaxed max-w-2xl">
+            Easily create, manage and track your invoices with our modern
+            invoicing tool. Perfect for businesses of all sizes.
+          </p>
+        </div>
+
+        <!-- Features List -->
+        <div class="grid sm:grid-cols-2 gap-4 text-gray-700">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center"
+            >
+              <i class="pi pi-check text-green-600 text-sm"></i>
+            </div>
+            <span>Quick invoice creation</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div
+              class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center"
+            >
+              <i class="pi pi-check text-green-600 text-sm"></i>
+            </div>
+            <span>Automatic tracking</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div
+              class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center"
+            >
+              <i class="pi pi-check text-green-600 text-sm"></i>
+            </div>
+            <span>PDF exports</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div
+              class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center"
+            >
+              <i class="pi pi-check text-green-600 text-sm"></i>
+            </div>
+            <span>Secure storage</span>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 pt-4 items-center">
+          <p-button
+            (onClick)="loginAsTestUser()"
+            styleClass="bg-gradient-to-r from-green-700 to-green-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 border-none"
+          >
+            Test for free
+          </p-button>
+          <a
+            routerLink="/sign-up"
+            class="px-4 py-2 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 text-center"
+          >
+            Sign Up
+          </a>
+          <a
+            routerLink="/login"
+            class="px-4 py-2 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 text-center"
+          >
+            Log in
+          </a>
+        </div>
+      </div>
+
+      <!-- Fake invoice image -->
+      <div class="relative">
+        <div class="relative">
+          <div
+            class="bg-white rounded-2xl shadow-2xl p-8 transform rotate-3 hover:rotate-0 transition-transform duration-300"
+          >
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center"
+                  >
+                    <i class="pi pi-file text-blue-600"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold text-gray-900">Invoice #001</h3>
+                    <p class="text-sm text-gray-500">For ABC Company</p>
+                  </div>
+                </div>
+                <span
+                  class="px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full"
+                >
+                  Paid
+                </span>
+              </div>
+
+              <div class="border-t pt-4">
+                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                  <span>Services</span>
+                  <span>€ 1,200</span>
+                </div>
+                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                  <span>VAT (21%)</span>
+                  <span>€ 252</span>
+                </div>
+                <div class="border-t pt-2">
+                  <div class="flex justify-between font-semibold text-gray-900">
+                    <span>Total</span>
+                    <span>€ 1,452</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating elements -->
+          <div
+            class="absolute -top-4 -right-4 w-16 h-16 bg-purple-100 rounded-full animate-pulse"
+          ></div>
+          <div
+            class="absolute -bottom-6 -left-6 w-12 h-12 bg-blue-100 rounded-full animate-bounce"
+          ></div>
+          <div
+            class="absolute top-1/2 -right-8 w-8 h-8 bg-green-100 rounded-full animate-ping"
+          ></div>
+        </div>
+      </div>
     </div>
-
-    <!-- <div>
-      <img src="assets/images/heroImage.svg" alt="hero image test" />
-    </div> -->
   </div>
 </section>

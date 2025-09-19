@@ -1,0 +1,15 @@
+<p-drawer
+  [(visible)]="visible"
+  header="Create New Invoice"
+  position="right"
+  styleClass="!w-full md:!w-80 lg:!w-[40rem]"
+>
+  <form>
+    <h3 class="text-green-800">Bill From</h3>
+    <p-floatlabel variant="on">
+      <input pInputText id="on_label" autocomplete="off" />
+      <label for="on_label">On Label</label>
+    </p-floatlabel>
+  </form>
+</p-drawer>
+<p-button (click)="visible = true" label="New Invoice" />
