@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../shared/services/data.service';
 import { Invoice } from '../../shared/models/models';
 import { TagModule } from 'primeng/tag';
-import { map, Subject, takeUntil } from 'rxjs';
+import { map } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main-table',
@@ -14,28 +15,14 @@ import { map, Subject, takeUntil } from 'rxjs';
 })
 export class MainTable {
   private dataService = inject(DataService);
-  private cdr = inject(ChangeDetectorRef);
-  private destroy$ = new Subject<void>();
+  private router = inject(Router);
 
-  public tableData$: Invoice[] = []; // Initialize as empty array
-  public loading$: boolean = true;
+  public tableData$ = this.dataService.allInvoicesData$.pipe(
+    map(data => data?.data || [])
+  );
 
+  public loading$ = this.dataService.loading$;
   public filterStatus$ = this.dataService.filterStatus$;
-
-  ngOnInit(): void {
-    this.dataService.allInvoicesData$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        console.log('New data received:', data);
-
-        // Always ensure we have an array
-        this.tableData$ = data?.data ? [...data.data] : [];
-        this.loading$ = data === null;
-
-        // Force change detection
-        this.cdr.detectChanges();
-      });
-  }
 
   getSeverity(status: string): string {
     const severityMap: { [key: string]: string } = {
@@ -44,5 +31,9 @@ export class MainTable {
       pending: 'info',
     };
     return severityMap[status] || 'secondary';
+  }
+
+  navigateToDetail(invoiceId: string): void {
+    this.router.navigate(['/dashboard/detail', invoiceId]);
   }
 }

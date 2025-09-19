@@ -1,9 +1,9 @@
 <div class="min-h-2/3">
-  @if(tableData$.length > 0){
+  @if(tableData$ | async; as tableData){ @if(tableData.length > 0){
 
   <p-table
-    [value]="tableData$"
-    [loading]="loading$"
+    [value]="tableData"
+    [loading]="loading$ | async"
     [paginator]="true"
     [rows]="10"
     [tableStyle]="{ 'min-width': '50rem' }"
@@ -54,11 +54,19 @@
         <td>
           <p-tag [value]="data.status" [severity]="getSeverity(data.status)" />
         </td>
-        <td>>></td>
+        <td>
+          <button
+            (click)="navigateToDetail(data._id!)"
+            class="text-black hover:text-gray-300 cursor-pointer font-semibold"
+            type="button"
+          >
+            >>
+          </button>
+        </td>
       </tr>
     </ng-template>
   </p-table>
-  } @else {
+  } } @else {
   <div class="rounded-lg p-16 text-center">
     <div class="max-w-md mx-auto">
       <!-- Modern empty state illustration -->

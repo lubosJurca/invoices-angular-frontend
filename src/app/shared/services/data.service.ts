@@ -53,7 +53,11 @@ export class DataService {
       this.loadingSubject.next(true);
       this.errorSubject.next(null); // Clear previous error
 
-      return this.fetchAllInvoices(filter);
+      return this.fetchAllInvoices(filter).pipe(
+        finalize(() => {
+          this.loadingSubject.next(false);
+        })
+      );
     }),
     tap((data) => {
       console.log('Data updated:', data);
@@ -63,12 +67,10 @@ export class DataService {
     catchError((error) => {
       console.error('Data service error:', error);
       this.errorSubject.next('Failed to load invoices. Please try again.');
+      this.loadingSubject.next(false); // Ensure loading is set to false on error
       return of(null);
     }),
-    shareReplay(1),
-    finalize(() => {
-      this.loadingSubject.next(false);
-    })
+    shareReplay(1)
   );
 
   constructor() {

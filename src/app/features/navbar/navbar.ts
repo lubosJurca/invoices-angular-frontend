@@ -6,10 +6,11 @@ import { Router } from '@angular/router';
 import { Button } from 'primeng/button';
 import { ToastService } from '../../shared/services/toast.service';
 import { AiDrawer } from '../ai-drawer/ai-drawer';
+import { NewInvoiceDrawer } from '../new-invoice-drawer/new-invoice-drawer';
 
 @Component({
   selector: 'app-navbar',
-  imports: [Menubar, CommonModule, Button, AiDrawer],
+  imports: [Menubar, CommonModule, Button, AiDrawer, NewInvoiceDrawer],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
