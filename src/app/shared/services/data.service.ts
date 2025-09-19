@@ -1,110 +1,96 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, OnInit } from '@angular/core';
 import { environment } from '../../environments/enviroment';
-import { GetAllInvoicesResponse, User } from '../models/models';
+import { GetAllInvoicesResponse } from '../models/models';
 import {
   BehaviorSubject,
   catchError,
   combineLatest,
+  distinctUntilChanged,
+  finalize,
   Observable,
   of,
+  shareReplay,
   switchMap,
   tap,
 } from 'rxjs';
 import { AuthService } from '../../core/auth/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DataService implements OnInit {
+export class DataService {
   private http = inject(HttpClient);
   private auth = inject(AuthService);
-  private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
 
+  // Loading subjects
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+  public loading$ = this.loadingSubject.asObservable();
+
+  // Error subjects
+  private errorSubject = new BehaviorSubject<string | null>(null);
+  public error$ = this.errorSubject.asObservable();
+
+  //Data subject
   private currentInvoiceData =
     new BehaviorSubject<GetAllInvoicesResponse | null>(null);
-  public currentInvoiceData$ = this.currentInvoiceData.asObservable();
+  public currentallInvoicesData$ = this.currentInvoiceData.asObservable();
+
+  //Filter subject
   private filterStatus = new BehaviorSubject<string>('all');
   public filterStatus$ = this.filterStatus.asObservable();
-  private page = new BehaviorSubject<number>(1);
-  public page$ = this.page.asObservable();
+
+  public allInvoicesData$ = combineLatest([
+    this.auth.currentUser$,
+    this.filterStatus$.pipe(distinctUntilChanged()),
+  ]).pipe(
+    switchMap(([user, filter]) => {
+      if (!user) {
+        this.loadingSubject.next(false);
+        return of(null);
+      }
+      // Set loading to true when starting to fetch
+      this.loadingSubject.next(true);
+      this.errorSubject.next(null); // Clear previous error
+
+      return this.fetchAllInvoices(filter);
+    }),
+    tap((data) => {
+      console.log('Data updated:', data);
+      // Create new reference for the BehaviorSubject
+      this.currentInvoiceData.next(data ? { ...data } : null);
+    }),
+    catchError((error) => {
+      console.error('Data service error:', error);
+      this.errorSubject.next('Failed to load invoices. Please try again.');
+      return of(null);
+    }),
+    shareReplay(1),
+    finalize(() => {
+      this.loadingSubject.next(false);
+    })
+  );
 
   constructor() {
-    // combineLatest to react to changes in auth, filter, or page
-    combineLatest([this.auth.currentUser$, this.filterStatus$, this.page$])
-      .pipe(
-        tap(([user, filter, page]) => {
-          console.log('🔄 Auth/Filter change:', { user: !!user, filter, page });
-          // Navigate to dashboard with updated query params
-          // it's inside tap to avoid affecting the stream
-          if (user) {
-            this.router.navigate(['/dashboard'], {
-              queryParams: { filter, page },
-            });
-          } else {
-            this.router.navigate(['/']); // if no user, go to home
-          }
-        }),
-        // switchMap to fetch data based on the latest values
-        // if user is null, return of(null) to clear data
-        switchMap(
-          ([user, filter, page]): Observable<GetAllInvoicesResponse | null> => {
-            if (user) {
-              return this.fetchInvoice(filter, page);
-            } else {
-              console.log('❌ No user, clearing data');
-              this.currentInvoiceData.next(null);
-              return of(null);
-            }
-          }
-        )
-      )
-      // subscribe to update currentInvoiceData
-      .subscribe({
-        next: (response) => {
-          console.log('📦 Constructor subscription received:', !!response);
-          if (response) {
-            this.currentInvoiceData.next(response);
-            console.log('✅ Data updated:', response);
-          }
-        },
-        error: (error) =>
-          console.error('❌ Constructor subscription error:', error),
-      });
+    console.log('DataService initialized');
   }
 
-  ngOnInit() {
-    // Initialize filter and page from query params
-    // Has to be in ngOnInit because constructor is too early
-    this.activatedRoute.queryParams.subscribe((params) => {
-      const initialFilter = params['filter'] || 'all';
-      const initialPage = Number(params['page']) || 1;
-
-      this.filterStatus.next(initialFilter);
-      this.page.next(initialPage);
-      console.log('Initial values from query params:', {
-        initialFilter,
-        initialPage,
-      });
-    });
+  initializeService(initialFilter: string = 'all') {
+    this.filterStatus.next(initialFilter);
   }
 
   setFilterStatus(filter: string) {
-    this.filterStatus.next(filter);
+    if (this.filterStatus.value !== filter) {
+      this.filterStatus.next(filter);
+    }
   }
 
-  private fetchInvoice(
-    filter: string,
-    page: number
+  private fetchAllInvoices(
+    filter: string
   ): Observable<GetAllInvoicesResponse | null> {
-    let params = new HttpParams();
+    const params = new HttpParams().set('filter', filter);
 
-    params = params.set('filter', filter);
-    params = params.set('page', page.toString());
-
-    console.log('About to make HTTP request with params:', params.toString());
+    console.log('Fetching invoices with filter:', filter);
 
     return this.http
       .get<GetAllInvoicesResponse>(`${environment.apiUrl}/invoices/`, {
@@ -113,12 +99,21 @@ export class DataService implements OnInit {
       })
       .pipe(
         tap((response) => {
-          console.log('HTTP request successful:', response);
+          console.log('Invoice data fetched successfully');
         }),
         catchError((error) => {
-          console.error('❌ HTTP Error:', error);
-          return of(null); // This is why we need | null in the return type
+          console.error('HTTP Error:', error);
+          throw error;
         })
       );
+  }
+
+  // Helper method to get current data synchronously
+  getCurrentData(): GetAllInvoicesResponse | null {
+    return this.currentInvoiceData.value;
+  }
+
+  isLoading(): boolean {
+    return this.loadingSubject.value;
   }
 }

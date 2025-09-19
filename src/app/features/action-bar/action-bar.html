@@ -2,19 +2,21 @@
   <div>
     <h2 class="font-bold text-2xl">Invoices</h2>
 
-    @if(totalInvoices === 0) {
+    @if((totalInvoices$ | async) === 0) {
     <p>No invoices found</p>
-    } @else if (totalInvoices === 1) {
+    } @else if ((totalInvoices$ | async) === 1) {
     <p>1 invoice found</p>
     } @else {
-    <p>{{ totalInvoices }} invoices found</p>
+    <p>{{ totalInvoices$ | async }} invoices found</p>
     }
   </div>
+
   <div class="card flex justify-center">
     <p-select
       [options]="statusOptions"
-      [(ngModel)]="filterStatus$"
+      [ngModel]="filterStatus$ | async"
       (onChange)="onFilterChange($event)"
+      [disabled]="(totalInvoices$ | async) === 0"
       placeholder="All"
       class="w-full md:w-56"
     />

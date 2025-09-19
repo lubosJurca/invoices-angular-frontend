@@ -1,19 +1,24 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DataService } from '../../shared/services/data.service';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
+import { map } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-action-bar',
-  imports: [FormsModule, Select],
+  imports: [FormsModule, Select, AsyncPipe],
   templateUrl: './action-bar.html',
   styleUrl: './action-bar.css',
 })
-export class ActionBar implements OnInit {
-  private data = inject(DataService);
-  private changeDetectionService = inject(ChangeDetectorRef);
-  public filterStatus$ = this.data.filterStatus$;
-  public totalInvoices: number = 0;
+export class ActionBar {
+  private dataService = inject(DataService);
+
+  public filterStatus$ = this.dataService.filterStatus$;
+  public totalInvoices$ = this.dataService.allInvoicesData$.pipe(
+    map((data) => data?.totalInvoices ?? 0)
+  );
+
   public statusOptions = [
     { label: 'All', value: 'all' },
     { label: 'Draft', value: 'draft' },
@@ -22,19 +27,7 @@ export class ActionBar implements OnInit {
   ];
 
   onFilterChange(event: any) {
-    this.data.setFilterStatus(event.value);
-  }
-
-  // Lifecycle hook to subscribe to invoice data changes
-  // and update totalInvoices accordingly
-  // has to be ngOnInit because constructor is too early
-  // changeDetectionService is needed to update the view
-  ngOnInit(): void {
-    this.data.currentInvoiceData$.subscribe((data) => {
-      if (data) {
-        this.totalInvoices = data.totalInvoices;
-        this.changeDetectionService.detectChanges();
-      }
-    });
+    console.log('Filter changed to:', event.value);
+    this.dataService.setFilterStatus(event.value);
   }
 }

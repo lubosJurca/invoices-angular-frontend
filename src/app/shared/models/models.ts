@@ -42,10 +42,6 @@ export interface Invoice {
 
 export interface GetAllInvoicesResponse {
   totalInvoices: number;
-  totalPages: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
   data: Invoice[];
-  currentPage: number;
   message: string;
 }

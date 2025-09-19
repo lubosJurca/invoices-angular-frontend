@@ -1,3 +1,7 @@
-<app-navbar> </app-navbar>
-<app-action-bar></app-action-bar>
-<app-main-table></app-main-table>
+<div class="min-h-screen flex flex-col justify-between">
+  <app-navbar> </app-navbar>
+  <div class="flex flex-col flex-1">
+    <router-outlet />
+  </div>
+  <app-footer></app-footer>
+</div>

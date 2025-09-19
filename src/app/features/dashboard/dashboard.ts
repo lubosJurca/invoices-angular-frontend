@@ -1,15 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { Navbar } from '../navbar/navbar';
-import { DataService } from '../../shared/services/data.service';
-import { ActionBar } from '../action-bar/action-bar';
-import { MainTable } from '../main-table/main-table';
+import { Footer } from '../footer/footer';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [Navbar, ActionBar, MainTable],
+  imports: [Navbar, Footer, RouterOutlet],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
-export class Dashboard {
-  private data = inject(DataService);
-}
+export class Dashboard {}

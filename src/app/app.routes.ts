@@ -4,6 +4,8 @@ import { LoginPage } from './features/login-page/login-page';
 import { SignUpPage } from './features/sign-up-page/sign-up-page';
 import { Dashboard } from './features/dashboard/dashboard';
 import { authGuard } from './core/auth/auth-guard-guard';
+import { DetailPage } from './features/detail-page/detail-page';
+import { TablePage } from './features/table-page/table-page';
 
 export const routes: Routes = [
   {
@@ -26,10 +28,19 @@ export const routes: Routes = [
     component: Dashboard,
     title: 'Dashboard',
     canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        component: TablePage,
+      },
+      {
+        path: 'detail/:id',
+        component: DetailPage,
+      },
+    ],
   },
   {
     path: '**',
-    component: HomePage,
-    title: 'Home',
+    redirectTo: '',
   },
 ];
