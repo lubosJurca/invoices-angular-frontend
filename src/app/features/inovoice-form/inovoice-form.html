@@ -1,0 +1,318 @@
+<section class="flex w-full min-h-screen justify-center items-start py-8">
+  <p-card class="w-full max-w-4xl">
+    <form
+      [formGroup]="invoiceForm"
+      (ngSubmit)="onSubmit()"
+      class="flex flex-col gap-6 mt-4"
+    >
+      <!-- Invoice Details Section -->
+      <div class="border-b pb-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">
+          Invoice Details
+        </h3>
+
+        <!-- Description - Full Width Row -->
+        <div class="mb-4">
+          <label
+            for="description"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Project Description
+          </label>
+          <textarea
+            pInputTextarea
+            name="description"
+            class="w-full p-1"
+            [class.border-red-500]="hasError('description')"
+            id="description"
+            formControlName="description"
+            rows="3"
+            autoResize="true"
+            placeholder="Enter project description..."
+          ></textarea>
+        </div>
+
+        <!-- Payment Terms and Due Date Row -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <p-floatlabel variant="on">
+            <input
+              type="number"
+              pInputText
+              name="paymentTerms"
+              class="w-full"
+              [class.border-red-500]="hasError('paymentTerms')"
+              id="paymentTerms"
+              formControlName="paymentTerms"
+            />
+            <label for="paymentTerms">Payment Terms (days)</label>
+          </p-floatlabel>
+
+          <p-floatlabel variant="on">
+            <p-datepicker
+              formControlName="dueDate"
+              [showIcon]="true"
+              inputId="dueDate"
+              dateFormat="dd/mm/yy"
+              [class.border-red-500]="hasError('dueDate')"
+              fluid
+            />
+            <label for="dueDate">Due Date</label>
+          </p-floatlabel>
+        </div>
+      </div>
+
+      <!-- Bill From Section -->
+      <div class="border-b pb-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Bill From</h3>
+        <div
+          formGroupName="senderAddress"
+          class="grid grid-cols-1 md:grid-cols-2 gap-4"
+        >
+          <p-floatlabel variant="on">
+            <input
+              type="text"
+              pInputText
+              name="senderStreet"
+              class="w-full"
+              [class.border-red-500]="hasError('senderAddress.street')"
+              id="senderStreet"
+              formControlName="street"
+            />
+            <label for="senderStreet">Street Address</label>
+          </p-floatlabel>
+
+          <p-floatlabel variant="on">
+            <input
+              type="text"
+              pInputText
+              name="senderCity"
+              class="w-full"
+              [class.border-red-500]="hasError('senderAddress.city')"
+              id="senderCity"
+              formControlName="city"
+            />
+            <label for="senderCity">City</label>
+          </p-floatlabel>
+
+          <p-floatlabel variant="on">
+            <input
+              type="text"
+              pInputText
+              name="senderPostCode"
+              class="w-full"
+              id="senderPostCode"
+              formControlName="postCode"
+            />
+            <label for="senderPostCode">Post Code</label>
+          </p-floatlabel>
+
+          <p-floatlabel variant="on">
+            <input
+              type="text"
+              pInputText
+              name="senderCountry"
+              class="w-full"
+              [class.border-red-500]="hasError('senderAddress.country')"
+              id="senderCountry"
+              formControlName="country"
+            />
+            <label for="senderCountry">Country</label>
+          </p-floatlabel>
+        </div>
+      </div>
+
+      <!-- Bill To Section -->
+      <div class="border-b pb-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Bill To</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <p-floatlabel variant="on">
+            <input
+              type="text"
+              pInputText
+              name="clientName"
+              class="w-full"
+              [class.border-red-500]="hasError('clientName')"
+              id="clientName"
+              formControlName="clientName"
+            />
+            <label for="clientName">Client Name</label>
+          </p-floatlabel>
+
+          <p-floatlabel variant="on">
+            <input
+              type="email"
+              pInputText
+              name="clientEmail"
+              class="w-full"
+              [class.border-red-500]="hasError('clientEmail')"
+              id="clientEmail"
+              formControlName="clientEmail"
+            />
+            <label for="clientEmail">Client Email</label>
+          </p-floatlabel>
+        </div>
+
+        <div
+          formGroupName="clientAddress"
+          class="grid grid-cols-1 md:grid-cols-2 gap-4"
+        >
+          <p-floatlabel variant="on">
+            <input
+              type="text"
+              pInputText
+              name="clientStreet"
+              class="w-full"
+              [class.border-red-500]="hasError('clientAddress.street')"
+              id="clientStreet"
+              formControlName="street"
+            />
+            <label for="clientStreet">Street Address</label>
+          </p-floatlabel>
+
+          <p-floatlabel variant="on">
+            <input
+              type="text"
+              pInputText
+              name="clientCity"
+              class="w-full"
+              [class.border-red-500]="hasError('clientAddress.city')"
+              id="clientCity"
+              formControlName="city"
+            />
+            <label for="clientCity">City</label>
+          </p-floatlabel>
+
+          <p-floatlabel variant="on">
+            <input
+              type="text"
+              pInputText
+              name="clientPostCode"
+              class="w-full"
+              id="clientPostCode"
+              formControlName="postCode"
+            />
+            <label for="clientPostCode">Post Code</label>
+          </p-floatlabel>
+
+          <p-floatlabel variant="on">
+            <input
+              type="text"
+              pInputText
+              name="clientCountry"
+              class="w-full"
+              [class.border-red-500]="hasError('clientAddress.country')"
+              id="clientCountry"
+              formControlName="country"
+            />
+            <label for="clientCountry">Country</label>
+          </p-floatlabel>
+        </div>
+      </div>
+
+      <!-- Items Section -->
+      <div class="border-b pb-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-semibold text-gray-800">Items</h3>
+          <p-button
+            type="button"
+            label="Add Item"
+            icon="pi pi-plus"
+            (onClick)="addItem()"
+            [outlined]="true"
+            size="small"
+          />
+        </div>
+
+        <div formArrayName="items" class="space-y-4">
+          @for(item of items.controls; track $index; let i = $index) {
+          <div [formGroupName]="i" class="border rounded-lg p-4 bg-gray-50">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div class="md:col-span-2">
+                <p-floatlabel variant="on">
+                  <input
+                    type="text"
+                    pInputText
+                    [name]="'itemName' + i"
+                    class="w-full"
+                    [id]="'itemName' + i"
+                    formControlName="name"
+                  />
+                  <label [for]="'itemName' + i">Item Name</label>
+                </p-floatlabel>
+              </div>
+
+              <p-floatlabel variant="on">
+                <input
+                  type="number"
+                  pInputText
+                  [name]="'quantity' + i"
+                  class="w-full"
+                  [id]="'quantity' + i"
+                  formControlName="quantity"
+                  min="1"
+                />
+                <label [for]="'quantity' + i">Quantity</label>
+              </p-floatlabel>
+
+              <p-floatlabel variant="on">
+                <input
+                  type="number"
+                  pInputText
+                  [name]="'price' + i"
+                  class="w-full"
+                  [id]="'price' + i"
+                  formControlName="price"
+                  min="0"
+                  step="0.01"
+                />
+                <label [for]="'price' + i">Price</label>
+              </p-floatlabel>
+            </div>
+
+            <div class="flex justify-between items-center mt-4">
+              <div class="text-lg font-semibold">
+                Total: {{ calculateItemTotal(item.get('quantity')?.value,
+                item.get('price')?.value) | currency }}
+              </div>
+              <p-button
+                type="button"
+                icon="pi pi-trash"
+                (onClick)="removeItem(i)"
+                [outlined]="true"
+                severity="danger"
+                size="small"
+              />
+            </div>
+          </div>
+          }
+        </div>
+
+        @if(items.length === 0) {
+        <div class="text-center py-8 text-gray-500">
+          No items added yet. Click "Add Item" to get started.
+        </div>
+        }
+      </div>
+
+      <!-- Total Section -->
+      <div class="flex justify-end">
+        <div class="text-right">
+          <div class="text-sm text-gray-500 mb-1">Total Amount</div>
+          <div class="text-3xl font-bold text-green-600">
+            {{ calculateTotal() | currency }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex justify-end pt-6">
+        <p-button
+          label="Create Invoice"
+          type="submit"
+          [disabled]="!invoiceForm.valid"
+          styleClass="w-full md:w-auto"
+        />
+      </div>
+    </form>
+  </p-card>
+</section>

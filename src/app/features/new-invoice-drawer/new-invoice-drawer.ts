@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { DrawerModule } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { FloatLabel } from 'primeng/floatlabel';
+import { InovoiceForm } from '../inovoice-form/inovoice-form';
 
 @Component({
   selector: 'app-new-invoice-drawer',
-  imports: [DrawerModule, ButtonModule, InputTextModule, FloatLabel],
+  imports: [DrawerModule, ButtonModule, InputTextModule, InovoiceForm],
   templateUrl: './new-invoice-drawer.html',
   styleUrl: './new-invoice-drawer.css',
 })
