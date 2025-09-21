@@ -36,7 +36,7 @@ export interface Invoice {
   items: InvoiceItem[];
   total: number;
 
-  createdBy: string;
+  createdBy?: string;
   updatedAt?: Date | string;
 }
 

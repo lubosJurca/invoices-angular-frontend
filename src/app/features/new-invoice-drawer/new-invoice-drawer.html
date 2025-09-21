@@ -2,8 +2,10 @@
   [(visible)]="visible"
   header="Create New Invoice"
   position="right"
-  styleClass="!w-full md:!w-80 lg:!w-[40rem]"
+  styleClass="!w-full md:!w-2/3 lg:!w-[40rem]"
 >
-  <app-inovoice-form></app-inovoice-form>
+  <app-inovoice-form
+    (invoiceFormData)="onInvoiceCreated($event)"
+  ></app-inovoice-form>
 </p-drawer>
 <p-button (click)="visible = true" label="New Invoice" />

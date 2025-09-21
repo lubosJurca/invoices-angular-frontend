@@ -1,4 +1,4 @@
-import { Component, inject, DestroyRef } from '@angular/core';
+import { Component, inject, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   NonNullableFormBuilder,
@@ -6,8 +6,6 @@ import {
   ReactiveFormsModule,
   FormArray,
 } from '@angular/forms';
-import { ToastService } from '../../shared/services/toast.service';
-import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -30,9 +28,8 @@ import { DatePickerModule } from 'primeng/datepicker';
 })
 export class InovoiceForm {
   private formBuilder = inject(NonNullableFormBuilder);
-  private toastService = inject(ToastService);
-  private router = inject(Router);
-  private destroyRef = inject(DestroyRef);
+
+  @Output() invoiceFormData = new EventEmitter<any>();
 
   invoiceForm = this.formBuilder.group({
     description: ['', Validators.required],
@@ -63,7 +60,9 @@ export class InovoiceForm {
   }
 
   onSubmit() {
-    console.log(this.invoiceForm.value);
+    if (this.invoiceForm.valid) {
+      this.invoiceFormData.emit(this.invoiceForm.value);
+    }
   }
 
   // Getter for items FormArray

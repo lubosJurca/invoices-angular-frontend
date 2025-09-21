@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, OnInit } from '@angular/core';
 import { environment } from '../../environments/enviroment';
-import { GetAllInvoicesResponse } from '../models/models';
+import { GetAllInvoicesResponse, Invoice } from '../models/models';
 import {
   BehaviorSubject,
   catchError,
@@ -15,6 +15,11 @@ import {
   tap,
 } from 'rxjs';
 import { AuthService } from '../../core/auth/auth.service';
+
+interface CreateInvoiceResponse {
+  message: string;
+  invoice: Invoice;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -40,9 +45,14 @@ export class DataService {
   private filterStatus = new BehaviorSubject<string>('all');
   public filterStatus$ = this.filterStatus.asObservable();
 
+  //Refresh trigger subject
+  private refreshTrigger$ = new BehaviorSubject<boolean>(false);
+
+  // Combined observable to fetch data based on user, filter, and refresh trigger
   public allInvoicesData$ = combineLatest([
     this.auth.currentUser$,
     this.filterStatus$.pipe(distinctUntilChanged()),
+    this.refreshTrigger$,
   ]).pipe(
     switchMap(([user, filter]) => {
       if (!user) {
@@ -73,12 +83,29 @@ export class DataService {
     shareReplay(1)
   );
 
-  constructor() {
-    console.log('DataService initialized');
-  }
-
-  initializeService(initialFilter: string = 'all') {
-    this.filterStatus.next(initialFilter);
+  // Create Invoice method
+  public createInvoice(
+    formData: Invoice
+  ): Observable<CreateInvoiceResponse | null> {
+    return this.http
+      .post<CreateInvoiceResponse>(
+        `${environment.apiUrl}/invoices/createInvoice`,
+        formData,
+        {
+          headers: this.auth.getAuthHeaders(),
+        }
+      )
+      .pipe(
+        tap((response) => {
+          console.log('Invoice created successfully:', response);
+          // Trigger a refresh of the invoice list
+          this.refreshTrigger$.next(!this.refreshTrigger$.value);
+        }),
+        catchError((error) => {
+          console.error('Error creating invoice:', error);
+          throw error;
+        })
+      );
   }
 
   setFilterStatus(filter: string) {
