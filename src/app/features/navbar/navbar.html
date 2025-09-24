@@ -1,14 +1,15 @@
 <p-menubar>
   <ng-template #start>
-    <h2 class="font-bold text-3xl text-green-700 hidden sm:block">
-      Invoice App
-    </h2></ng-template
+    <h2 class="font-bold text-3xl text-green-700">Invoice</h2></ng-template
   >
   <ng-template #end>
     <div class="flex align-items-center gap-2">
       <app-new-invoice-drawer></app-new-invoice-drawer>
       <app-ai-drawer></app-ai-drawer>
-      <p-button label="Logout" (onClick)="logoutUser()" />
+      <p-button (onClick)="logoutUser()"
+        ><span class="material-icons-outlined"> logout </span>
+        <span class="font-bold hidden sm:block">Logout</span></p-button
+      >
     </div>
   </ng-template>
 </p-menubar>

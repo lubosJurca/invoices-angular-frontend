@@ -8,4 +8,7 @@
     (invoiceFormData)="onInvoiceCreated($event)"
   ></app-inovoice-form>
 </p-drawer>
-<p-button (click)="visible = true" label="New Invoice" />
+<p-button (click)="visible = true">
+  <span class="material-icons-outlined">add_box</span>
+  <span class="hidden sm:inline ml-2 font-bold">New Invoice</span>
+</p-button>

@@ -70,7 +70,6 @@ export class DataService {
       );
     }),
     tap((data) => {
-      console.log('Data updated:', data);
       // Create new reference for the BehaviorSubject
       this.currentInvoiceData.next(data ? { ...data } : null);
     }),
@@ -97,7 +96,7 @@ export class DataService {
       )
       .pipe(
         tap((response) => {
-          console.log('Invoice created successfully:', response);
+          console.log('Invoice created successfully');
           // Trigger a refresh of the invoice list
           this.refreshTrigger$.next(!this.refreshTrigger$.value);
         }),
@@ -118,8 +117,6 @@ export class DataService {
     filter: string
   ): Observable<GetAllInvoicesResponse | null> {
     const params = new HttpParams().set('filter', filter);
-
-    console.log('Fetching invoices with filter:', filter);
 
     return this.http
       .get<GetAllInvoicesResponse>(`${environment.apiUrl}/invoices/`, {

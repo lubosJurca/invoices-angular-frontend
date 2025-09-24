@@ -11,42 +11,8 @@
           Invoice Details
         </h3>
 
-        <!-- Description - Full Width Row -->
-        <div class="mb-4">
-          <label
-            for="description"
-            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Project Description
-          </label>
-          <textarea
-            pInputTextarea
-            name="description"
-            class="w-full p-1"
-            [class.border-red-500]="hasError('description')"
-            id="description"
-            formControlName="description"
-            rows="3"
-            autoResize="true"
-            placeholder="Enter project description..."
-          ></textarea>
-        </div>
-
         <!-- Payment Terms and Due Date Row -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <p-floatlabel variant="on">
-            <input
-              type="number"
-              pInputText
-              name="paymentTerms"
-              class="w-full"
-              [class.border-red-500]="hasError('paymentTerms')"
-              id="paymentTerms"
-              formControlName="paymentTerms"
-            />
-            <label for="paymentTerms">Payment Terms (days)</label>
-          </p-floatlabel>
-
+        <div class="w-full">
           <p-floatlabel variant="on">
             <p-datepicker
               formControlName="dueDate"
@@ -63,7 +29,9 @@
 
       <!-- Bill From Section -->
       <div class="border-b dark:border-gray-700 pb-6">
-        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Bill From</h3>
+        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
+          Bill From
+        </h3>
         <div
           formGroupName="senderAddress"
           class="grid grid-cols-1 md:grid-cols-2 gap-4"
@@ -123,7 +91,9 @@
 
       <!-- Bill To Section -->
       <div class="border-b dark:border-gray-700 pb-6">
-        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Bill To</h3>
+        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
+          Bill To
+        </h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <p-floatlabel variant="on">
             <input
@@ -212,7 +182,9 @@
       <!-- Items Section -->
       <div class="border-b dark:border-gray-700 pb-6">
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Items</h3>
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100">
+            Items
+          </h3>
           <p-button
             type="button"
             label="Add Item"
@@ -290,6 +262,27 @@
           }
         </div>
 
+        <!-- Description - Full Width Row -->
+        <div class="mb-4">
+          <label
+            for="description"
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4"
+          >
+            Project Description
+          </label>
+          <textarea
+            pInputTextarea
+            name="description"
+            class="w-full px-4 py-2 outline mt-1"
+            [class.border-red-500]="hasError('description')"
+            id="description"
+            formControlName="description"
+            rows="3"
+            autoResize="true"
+            placeholder="Enter project description..."
+          ></textarea>
+        </div>
+
         @if(items.length === 0) {
         <div class="text-center py-8 text-gray-500 dark:text-gray-400">
           No items added yet. Click "Add Item" to get started.
@@ -300,7 +293,9 @@
       <!-- Total Section -->
       <div class="flex justify-end">
         <div class="text-right">
-          <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Total Amount</div>
+          <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">
+            Total Amount
+          </div>
           <div class="text-3xl font-bold text-green-600 dark:text-green-400">
             {{ calculateTotal() | currency }}
           </div>

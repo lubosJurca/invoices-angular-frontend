@@ -62,6 +62,7 @@ export class InovoiceForm {
   onSubmit() {
     if (this.invoiceForm.valid) {
       this.invoiceFormData.emit(this.invoiceForm.value);
+      this.invoiceForm.reset();
     }
   }
 

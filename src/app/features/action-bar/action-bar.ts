@@ -27,7 +27,6 @@ export class ActionBar {
   ];
 
   onFilterChange(event: any) {
-    console.log('Filter changed to:', event.value);
     this.dataService.setFilterStatus(event.value);
   }
 }

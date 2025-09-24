@@ -14,14 +14,15 @@
       <i class="pi pi-arrow-left"></i>
       Back to Invoices
     </button>
-    <p-tag [value]="invoice.status" [severity]="getSeverity(invoice.status)" />
   </div>
+
+  <!-- TODO: POKRACUJ V Responsivite -->
 
   <!-- Invoice Header Card -->
   <p-card class="mb-6">
     <ng-template #header>
       <div class="p-6 border-b">
-        <div class="flex justify-between items-start">
+        <div class="flex justify-between items- border flex-wrap gap-4">
           <div>
             <h1
               class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2"
@@ -32,7 +33,7 @@
               {{ invoice.description }}
             </p>
           </div>
-          <div class="text-right">
+          <div>
             <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">
               Total Amount
             </div>
@@ -45,31 +46,30 @@
     </ng-template>
 
     <!-- Invoice Details -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
-      <div>
-        <div class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-          Created Date
+    <div class="flex justify-between items-center gap-6 flex-wrap">
+      <div class="flex w-full sm:w-1/3 justify-between">
+        <div>
+          <div
+            class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1"
+          >
+            Created Date
+          </div>
+          <div class="text-gray-900 dark:text-gray-100">
+            {{ invoice.createdAt | date }}
+          </div>
         </div>
-        <div class="text-gray-900 dark:text-gray-100">
-          {{ invoice.createdAt | date:'mediumDate' }}
-        </div>
-      </div>
-      <div>
-        <div class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-          Due Date
-        </div>
-        <div class="text-gray-900 dark:text-gray-100">
-          {{ invoice.dueDate | date:'mediumDate' }}
-        </div>
-      </div>
-      <div>
-        <div class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-          Payment Terms
-        </div>
-        <div class="text-gray-900 dark:text-gray-100">
-          {{ invoice.paymentTerms }} days
+        <div>
+          <div
+            class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1"
+          >
+            Due Date
+          </div>
+          <div class="text-gray-900 dark:text-gray-100">
+            {{ invoice.dueDate | date }}
+          </div>
         </div>
       </div>
+
       <div>
         <div class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
           Status
