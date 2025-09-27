@@ -6,9 +6,12 @@ import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinner } from 'primeng/progressspinner';
-import { Observable, of, map, tap } from 'rxjs';
+import { Observable, of, map } from 'rxjs';
 import { Invoice } from '../../shared/models/models';
 import { DataService } from '../../shared/services/data.service';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { ToastService } from '../../shared/services/toast.service';
 
 @Component({
   selector: 'app-detail-page',
@@ -18,15 +21,19 @@ import { DataService } from '../../shared/services/data.service';
     ButtonModule,
     TagModule,
     TableModule,
-    ProgressSpinner
+    ProgressSpinner,
+    ConfirmDialog,
   ],
+  providers: [ConfirmationService],
   templateUrl: './detail-page.html',
-  styleUrl: './detail-page.css'
+  styleUrl: './detail-page.css',
 })
 export class DetailPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private dataService = inject(DataService);
+  private confirmationService = inject(ConfirmationService);
+  private messageService = inject(ToastService);
 
   public invoice$: Observable<Invoice | null> = of(null);
   public loading = true;
@@ -40,8 +47,9 @@ export class DetailPage implements OnInit {
 
     if (this.invoiceId) {
       this.invoice$ = this.dataService.allInvoicesData$.pipe(
-        map(data => {
-          const invoice = data?.data.find(inv => inv._id === this.invoiceId) || null;
+        map((data) => {
+          const invoice =
+            data?.data.find((inv) => inv._id === this.invoiceId) || null;
           return invoice;
         })
       );
@@ -65,5 +73,28 @@ export class DetailPage implements OnInit {
 
   calculateItemTotal(quantity: number, price: number): number {
     return quantity * price;
+  }
+
+  confirm1(event: Event) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Are you sure that you want to proceed?',
+      header: 'Confirmation',
+      closable: true,
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Save',
+      },
+      accept: () => {
+        this.messageService.success('Successfully deleted!');
+      },
+      reject: () => {},
+    });
   }
 }
