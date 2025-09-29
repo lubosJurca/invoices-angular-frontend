@@ -10,8 +10,7 @@ import { Observable, of, map } from 'rxjs';
 import { Invoice } from '../../shared/models/models';
 import { DataService } from '../../shared/services/data.service';
 import { ConfirmationService } from 'primeng/api';
-import { ConfirmDialog } from 'primeng/confirmdialog';
-import { ToastService } from '../../shared/services/toast.service';
+import { DeleteButton } from '../delete-button/delete-button';
 
 @Component({
   selector: 'app-detail-page',
@@ -22,7 +21,7 @@ import { ToastService } from '../../shared/services/toast.service';
     TagModule,
     TableModule,
     ProgressSpinner,
-    ConfirmDialog,
+    DeleteButton,
   ],
   providers: [ConfirmationService],
   templateUrl: './detail-page.html',
@@ -32,8 +31,6 @@ export class DetailPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private dataService = inject(DataService);
-  private confirmationService = inject(ConfirmationService);
-  private messageService = inject(ToastService);
 
   public invoice$: Observable<Invoice | null> = of(null);
   public loading = true;
@@ -73,28 +70,5 @@ export class DetailPage implements OnInit {
 
   calculateItemTotal(quantity: number, price: number): number {
     return quantity * price;
-  }
-
-  confirm1(event: Event) {
-    this.confirmationService.confirm({
-      target: event.target as EventTarget,
-      message: 'Are you sure that you want to proceed?',
-      header: 'Confirmation',
-      closable: true,
-      closeOnEscape: true,
-      icon: 'pi pi-exclamation-triangle',
-      rejectButtonProps: {
-        label: 'Cancel',
-        severity: 'secondary',
-        outlined: true,
-      },
-      acceptButtonProps: {
-        label: 'Save',
-      },
-      accept: () => {
-        this.messageService.success('Successfully deleted!');
-      },
-      reject: () => {},
-    });
   }
 }

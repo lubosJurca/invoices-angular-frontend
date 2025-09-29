@@ -46,8 +46,9 @@ export class DataService {
   public filterStatus$ = this.filterStatus.asObservable();
 
   //Refresh trigger subject
-  private refreshTrigger$ = new BehaviorSubject<boolean>(false);
+  public refreshTrigger$ = new BehaviorSubject<boolean>(false);
 
+  // ------------------- Fetching all invoices with filtering and refresh -------------------
   // Combined observable to fetch data based on user, filter, and refresh trigger
   public allInvoicesData$ = combineLatest([
     this.auth.currentUser$,
@@ -82,6 +83,7 @@ export class DataService {
     shareReplay(1)
   );
 
+  // ------------------- Create Invoice -------------------
   // Create Invoice method
   public createInvoice(
     formData: Invoice
@@ -113,9 +115,16 @@ export class DataService {
     }
   }
 
-  private fetchAllInvoices(
-    filter: string
-  ): Observable<GetAllInvoicesResponse | null> {
+  // ---------------- Delete Invoice -------------------
+  deleteInvoice(invoiceId: string): Observable<{ message: string } | null> {
+    return this.http.delete<{ message: string }>(
+      `${environment.apiUrl}/invoices/${invoiceId}`,
+      { headers: this.auth.getAuthHeaders() }
+    );
+  }
+
+  // -------------------  helper methods -------------------
+  fetchAllInvoices(filter: string): Observable<GetAllInvoicesResponse | null> {
     const params = new HttpParams().set('filter', filter);
 
     return this.http
