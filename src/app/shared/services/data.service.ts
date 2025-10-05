@@ -118,7 +118,18 @@ export class DataService {
   // ---------------- Delete Invoice -------------------
   deleteInvoice(invoiceId: string): Observable<{ message: string } | null> {
     return this.http.delete<{ message: string }>(
-      `${environment.apiUrl}/invoices/${invoiceId}`,
+      `${environment.apiUrl}/invoices/delete-invoice/${invoiceId}`,
+      { headers: this.auth.getAuthHeaders() }
+    );
+  }
+
+  // ------------------- Mark Invoice as Paid -------------------
+  editMarkAsPaid(
+    invoiceId: string
+  ): Observable<{ message: string; updatedInvoice: Invoice } | null> {
+    return this.http.patch<{ message: string; updatedInvoice: Invoice }>(
+      `${environment.apiUrl}/invoices/edit-status/${invoiceId}`,
+      {},
       { headers: this.auth.getAuthHeaders() }
     );
   }

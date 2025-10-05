@@ -3,7 +3,7 @@
   <div class="flex justify-center items-center min-h-96">
     <p-progressSpinner />
   </div>
-  } @else { @if(invoice$ | async; as invoice) {
+  } @else { @if(invoice | async; as invoice) {
   <!-- Header with back button -->
   <div class="flex items-center justify-between mb-6">
     <button
@@ -210,7 +210,7 @@
 
       <!-- Mobile Card View -->
       <div class="sm:hidden space-y-4">
-        @for (item of invoice.items; track item) {
+        @for (item of invoice.items; track $index) {
         <div
           class="border rounded-lg p-4 bg-white dark:bg-gray-800 dark:border-gray-700"
         >
@@ -266,15 +266,8 @@
       severity="success"
       styleClass="w-full sm:w-fit"
     />
-    <app-delete-button invoiceId="{{invoiceId}}" />
-    <p-button
-      label="Mark as Paid"
-      icon="pi pi-check"
-      raised="true"
-      severity="help"
-      styleClass="w-full sm:w-fit"
-      [disabled]="invoice.status === 'paid'"
-    />
+    <app-delete-button [invoiceId]="invoiceId" />
+    <app-mark-as-paid-button [invoice]="invoice"></app-mark-as-paid-button>
   </div>
 
   <!-- Metadata -->

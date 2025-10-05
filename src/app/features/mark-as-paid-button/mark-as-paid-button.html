@@ -1,0 +1,10 @@
+<p-confirmdialog />
+<p-button
+  label="Mark as Paid"
+  icon="pi pi-check"
+  raised="true"
+  severity="help"
+  styleClass="w-full sm:w-fit"
+  [disabled]="invoice?.status === 'paid'"
+  (onClick)="confirmEditStatus($event)"
+/>

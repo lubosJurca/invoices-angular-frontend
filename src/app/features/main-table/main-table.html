@@ -9,6 +9,8 @@
     [tableStyle]="{ 'min-width': '50rem' }"
     [rowsPerPageOptions]="[ 10, 20, 30]"
     stripedRows
+    sortField="createdAt"
+    [sortOrder]="-1"
   >
     <ng-template #header>
       <tr>

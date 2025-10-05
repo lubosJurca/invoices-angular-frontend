@@ -11,6 +11,7 @@ import { Invoice } from '../../shared/models/models';
 import { DataService } from '../../shared/services/data.service';
 import { ConfirmationService } from 'primeng/api';
 import { DeleteButton } from '../delete-button/delete-button';
+import { MarkAsPaidButton } from '../mark-as-paid-button/mark-as-paid-button';
 
 @Component({
   selector: 'app-detail-page',
@@ -22,6 +23,7 @@ import { DeleteButton } from '../delete-button/delete-button';
     TableModule,
     ProgressSpinner,
     DeleteButton,
+    MarkAsPaidButton,
   ],
   providers: [ConfirmationService],
   templateUrl: './detail-page.html',
@@ -32,7 +34,7 @@ export class DetailPage implements OnInit {
   private router = inject(Router);
   private dataService = inject(DataService);
 
-  public invoice$: Observable<Invoice | null> = of(null);
+  public invoice: Observable<Invoice | null> = of(null);
   public loading = true;
   public invoiceId: string | null = null;
 
@@ -43,7 +45,7 @@ export class DetailPage implements OnInit {
     this.loading = false;
 
     if (this.invoiceId) {
-      this.invoice$ = this.dataService.allInvoicesData$.pipe(
+      this.invoice = this.dataService.allInvoicesData$.pipe(
         map((data) => {
           const invoice =
             data?.data.find((inv) => inv._id === this.invoiceId) || null;
@@ -51,7 +53,7 @@ export class DetailPage implements OnInit {
         })
       );
     } else {
-      this.invoice$ = of(null);
+      this.invoice = of(null);
     }
   }
 
