@@ -10,7 +10,6 @@ import { DataService } from '../../shared/services/data.service';
   selector: 'app-mark-as-paid-button',
   imports: [ButtonModule, ConfirmDialogModule],
   templateUrl: './mark-as-paid-button.html',
-  styleUrl: './mark-as-paid-button.css',
 })
 export class MarkAsPaidButton {
   @Input() invoice!: Invoice | null;

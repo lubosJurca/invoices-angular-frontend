@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
   imports: [ButtonModule, ConfirmDialogModule],
   providers: [ConfirmationService],
   templateUrl: './delete-button.html',
-  styleUrl: './delete-button.css',
 })
 export class DeleteButton {
   @Input() invoiceId!: string | null;

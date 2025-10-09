@@ -17,6 +17,7 @@ export interface InvoiceItem {
   name: string;
   quantity: number;
   price: number;
+  total?: number;
 }
 
 export interface Invoice {
@@ -25,7 +26,7 @@ export interface Invoice {
   dueDate: Date | string;
 
   description: string;
-  paymentTerms: number;
+  paymentTerms?: number;
   clientName: string;
   clientEmail: string;
   status: string;

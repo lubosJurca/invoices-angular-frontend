@@ -7,7 +7,6 @@ import { MainTable } from '../main-table/main-table';
   selector: 'app-table-page',
   imports: [ActionBar, MainTable],
   templateUrl: './table-page.html',
-  styleUrl: './table-page.css',
 })
 export class TablePage {
   private dataService = inject(DataService);

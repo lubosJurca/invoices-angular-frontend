@@ -115,6 +115,18 @@ export class DataService {
     }
   }
 
+  //--------------- Edit Invoice -------------------
+  editInvoice(
+    invoiceId: string,
+    formData: Invoice
+  ): Observable<{ message: string } | null> {
+    return this.http.put<{ message: string }>(
+      `${environment.apiUrl}/invoices/edit-invoice/${invoiceId}`,
+      formData,
+      { headers: this.auth.getAuthHeaders() }
+    );
+  }
+
   // ---------------- Delete Invoice -------------------
   deleteInvoice(invoiceId: string): Observable<{ message: string } | null> {
     return this.http.delete<{ message: string }>(

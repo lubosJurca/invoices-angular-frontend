@@ -9,7 +9,6 @@ import { AsyncPipe } from '@angular/common';
   selector: 'app-action-bar',
   imports: [FormsModule, Select, AsyncPipe],
   templateUrl: './action-bar.html',
-  styleUrl: './action-bar.css',
 })
 export class ActionBar {
   private dataService = inject(DataService);

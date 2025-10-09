@@ -11,14 +11,13 @@ import { Router } from '@angular/router';
   selector: 'app-main-table',
   imports: [TableModule, CommonModule, TagModule],
   templateUrl: './main-table.html',
-  styleUrl: './main-table.css',
 })
 export class MainTable {
   private dataService = inject(DataService);
   private router = inject(Router);
 
   public tableData$ = this.dataService.allInvoicesData$.pipe(
-    map(data => data?.data || [])
+    map((data) => data?.data || [])
   );
 
   public loading$ = this.dataService.loading$;

@@ -30,7 +30,6 @@ import { ToastService } from '../../shared/services/toast.service';
   ],
 
   templateUrl: './login-page.html',
-  styleUrl: './login-page.css',
 })
 export class LoginPage {
   private formBuilder = inject(NonNullableFormBuilder);

@@ -6,13 +6,12 @@ import { Router } from '@angular/router';
 import { Button } from 'primeng/button';
 import { ToastService } from '../../shared/services/toast.service';
 import { AiDrawer } from '../ai-drawer/ai-drawer';
-import { NewInvoiceDrawer } from '../new-invoice-drawer/new-invoice-drawer';
+import { InvoiceDrawer } from '../invoice-drawer/invoice-drawer';
 
 @Component({
   selector: 'app-navbar',
-  imports: [Menubar, CommonModule, Button, AiDrawer, NewInvoiceDrawer],
+  imports: [Menubar, CommonModule, Button, AiDrawer, InvoiceDrawer],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css',
 })
 export class Navbar {
   private authService = inject(AuthService);

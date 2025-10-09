@@ -12,6 +12,7 @@ import { DataService } from '../../shared/services/data.service';
 import { ConfirmationService } from 'primeng/api';
 import { DeleteButton } from '../delete-button/delete-button';
 import { MarkAsPaidButton } from '../mark-as-paid-button/mark-as-paid-button';
+import { InvoiceDrawer } from '../invoice-drawer/invoice-drawer';
 
 @Component({
   selector: 'app-detail-page',
@@ -24,10 +25,11 @@ import { MarkAsPaidButton } from '../mark-as-paid-button/mark-as-paid-button';
     ProgressSpinner,
     DeleteButton,
     MarkAsPaidButton,
+
+    InvoiceDrawer,
   ],
   providers: [ConfirmationService],
   templateUrl: './detail-page.html',
-  styleUrl: './detail-page.css',
 })
 export class DetailPage implements OnInit {
   private route = inject(ActivatedRoute);
