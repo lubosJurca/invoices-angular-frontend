@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../shared/services/data.service';
-import { Invoice } from '../../shared/models/models';
 import { TagModule } from 'primeng/tag';
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
@@ -17,7 +16,10 @@ export class MainTable {
   private router = inject(Router);
 
   public tableData$ = this.dataService.allInvoicesData$.pipe(
-    map((data) => data?.data || [])
+    map((data) => {
+      console.log('Table Data:', data);
+      return data?.data || [];
+    })
   );
 
   public loading$ = this.dataService.loading$;

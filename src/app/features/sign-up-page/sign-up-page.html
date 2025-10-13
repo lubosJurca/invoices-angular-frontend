@@ -15,13 +15,15 @@
           name="name"
           class="w-full"
           id="name"
-          formControlName="name"   
+          formControlName="name"
         />
         <label for="name">Name</label>
       </p-floatlabel>
 
       @if(hasError('name')) {
-      <div class="text-red-600 mb-2 ">Name must contain at least 3 characters</div>
+      <div class="text-red-600 mb-2">
+        Name must contain at least 3 characters
+      </div>
       }
 
       <p-floatlabel variant="on">
@@ -36,8 +38,8 @@
         <label for="email">Email</label>
       </p-floatlabel>
 
-        @if(hasError('email')) {
-      <div class="text-red-600 mb-2 ">Wrong email format</div>
+      @if(hasError('email')) {
+      <div class="text-red-600 mb-2">Wrong email format</div>
       }
 
       <p-floatlabel variant="on">
@@ -50,8 +52,10 @@
         <label for="password">Password</label>
       </p-floatlabel>
 
-          @if(hasError('password')) {
-      <div class="text-red-600 mb-2 ">Password must be at least 8 characters long</div>
+      @if(hasError('password')) {
+      <div class="text-red-600 mb-2">
+        Password must be at least 8 characters long
+      </div>
       }
 
       <p-floatlabel variant="on">
@@ -64,16 +68,26 @@
         <label for="confirmPassword">Confirm Password</label>
       </p-floatlabel>
 
-      @if( hasError('confirmPassword') && registerForm.errors?.['passwordMismatch']){
-      <div class="text-red-600 mb-2 ">Passwords do not match</div>
+      @if( hasError('confirmPassword') &&
+      registerForm.errors?.['passwordMismatch']){
+      <div class="text-red-600 mb-2">Passwords do not match</div>
       }
 
-      <p-button label="Sign Up" styleClass="w-full" type="submit" [disabled]="!registerForm.valid" />
+      <p-button
+        label="Sign Up"
+        styleClass="w-full"
+        type="submit"
+        [disabled]="!registerForm.valid"
+      />
     </form>
     <ng-template #footer>
       <p class="text-center">
         Already a member?
         <p-button link> <a routerLink="/login">Login</a></p-button>
+      </p>
+      <p class="text-center">
+        Go back to
+        <p-button link> <a routerLink="/">Home</a></p-button>
       </p>
     </ng-template>
   </p-card>

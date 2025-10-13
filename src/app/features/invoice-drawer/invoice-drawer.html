@@ -9,10 +9,10 @@
     (invoiceFormData)="onFormSubmit($event)"
   ></app-invoice-form>
 </p-drawer>
-<p-button (click)="visible = true">
+<p-button (click)="visible = true" styleClass="w-full">
   @if (this.invoice) {
   <span class="material-icons-outlined"> edit </span>
-  <span class="hidden sm:inline ml-2 font-bold">Edit Invoice</span>
+  <span class="ml-2 font-bold">Edit Invoice</span>
   }@else {
   <span class="material-icons-outlined">add_box</span>
   <span class="hidden sm:inline ml-2 font-bold">New Invoice</span>

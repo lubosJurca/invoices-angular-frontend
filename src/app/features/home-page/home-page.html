@@ -8,7 +8,7 @@
       <div class="space-y-8">
         <div class="space-y-6">
           <h1
-            class="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight"
+            class="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight text-center"
           >
             Manage your
             <span
@@ -20,14 +20,18 @@
             simply and efficiently
           </h1>
 
-          <p class="text-xl text-gray-600 leading-relaxed max-w-2xl">
+          <p
+            class="text-xl text-gray-600 leading-relaxed max-w-2xl text-center"
+          >
             Easily create, manage and track your invoices with our modern
             invoicing tool. Perfect for businesses of all sizes.
           </p>
         </div>
 
         <!-- Features List -->
-        <div class="grid sm:grid-cols-2 gap-4 text-gray-700">
+        <div
+          class="flex flex-col sm:flex-row justify-center items-center gap-4 text-gray-700"
+        >
           <div class="flex items-center gap-3">
             <div
               class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center"
@@ -50,35 +54,29 @@
             >
               <i class="pi pi-check text-green-600 text-sm"></i>
             </div>
-            <span>PDF exports</span>
-          </div>
-          <div class="flex items-center gap-3">
-            <div
-              class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center"
-            >
-              <i class="pi pi-check text-green-600 text-sm"></i>
-            </div>
             <span>Secure storage</span>
           </div>
         </div>
 
         <!-- Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 pt-4 items-center">
+        <div
+          class="flex flex-col sm:flex-row gap-4 pt-4 items-center justify-center sm:auto border-gray-600"
+        >
           <p-button
             (onClick)="loginAsTestUser()"
-            styleClass="bg-gradient-to-r from-green-700 to-green-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 border-none"
+            styleClass="bg-gradient-to-r w-64 sm:w-auto from-green-700 to-green-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 border-none"
           >
             Test for free
           </p-button>
           <a
             routerLink="/sign-up"
-            class="px-4 py-2 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 text-center"
+            class="px-4 py-2 border-2 w-64 sm:w-auto border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 text-center"
           >
             Sign Up
           </a>
           <a
             routerLink="/login"
-            class="px-4 py-2 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 text-center"
+            class="px-4 py-2 border-2 w-64 sm:w-auto border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 text-center"
           >
             Log in
           </a>
