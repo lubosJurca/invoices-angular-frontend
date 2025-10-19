@@ -49,7 +49,7 @@ export class DataService {
   public refreshTrigger$ = new BehaviorSubject<boolean>(false);
 
   // ------------------- Fetching all invoices with filtering and refresh -------------------
-  // Combined observable to fetch data based on user, filter, and refresh trigger
+  // Combined observable to fetch data based on user, filter, and refresh a
   public allInvoicesData$ = combineLatest([
     this.auth.currentUser$,
     this.filterStatus$.pipe(distinctUntilChanged()),

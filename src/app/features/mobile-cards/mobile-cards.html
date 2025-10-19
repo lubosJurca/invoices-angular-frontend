@@ -1,5 +1,5 @@
 <div class="md:hidden p-4">
-  @if(cardsData | async; as cards) { @if(cards.length > 0) {
+  @if(paginatedCards$ | async; as cards) { @if(cards.length > 0) {
   <div class="space-y-4">
     @for(card of cards; track card._id) {
     <div
@@ -40,7 +40,7 @@
         (onPageChange)="onPageChange($event)"
         [first]="first"
         [rows]="rows"
-        [totalRecords]="cards.length"
+        [totalRecords]="(cardsData | async)?.length"
       />
     </div>
   </div>
