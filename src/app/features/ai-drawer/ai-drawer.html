@@ -8,6 +8,7 @@
       pTextarea
       id="over_label"
       [(ngModel)]="inputText"
+      minlength="5"
       rows="5"
       cols="30"
       maxlength="150"
@@ -19,10 +20,10 @@
 
   <p-button
     styleClass="w-full mt-2 mb-4 "
-    [disabled]="isLoading"
+    [disabled]="inputText.length < 5 || (isLoading | async)"
     (onClick)="submitQuestion()"
   >
-    @if (isLoading) {
+    @if (isLoading | async) {
     <p-progress-spinner ariaLabel="loading" class="h-8"></p-progress-spinner>
     } @else { Send }
   </p-button>

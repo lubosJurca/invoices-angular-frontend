@@ -7,6 +7,7 @@ import { Button } from 'primeng/button';
 import { ToastService } from '../../shared/services/toast.service';
 import { AiDrawer } from '../ai-drawer/ai-drawer';
 import { InvoiceDrawer } from '../invoice-drawer/invoice-drawer';
+import { DarkTheme } from '../../shared/services/dark-theme.service';
 
 @Component({
   selector: 'app-navbar',
@@ -17,11 +18,13 @@ export class Navbar {
   private authService = inject(AuthService);
   private router = inject(Router);
   private toastService = inject(ToastService);
+  private darkTheme = inject(DarkTheme);
 
   toggleDarkMode() {
-    const element = document.querySelector('html');
-    element?.classList.toggle('dark-theme');
+    this.darkTheme.toggleDarkMode();
   }
+
+  isDarkMode$ = this.darkTheme.darkMode$;
 
   logoutUser() {
     this.authService.logout().subscribe({

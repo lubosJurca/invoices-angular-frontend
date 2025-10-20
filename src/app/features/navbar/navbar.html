@@ -2,7 +2,13 @@
   <ng-template #start> <h2 class="font-bold text-3xl">Invoice</h2></ng-template>
   <ng-template #end>
     <div class="flex align-items-center gap-2">
-      <p-button label="Toggle theme button" (onClick)="toggleDarkMode()" />
+      <p-button (onClick)="toggleDarkMode()">
+        @if( isDarkMode$ | async){
+        <span class="material-icons-outlined"> dark_mode </span>
+        }@else {
+        <span class="material-icons-outlined"> light_mode </span>
+        }
+      </p-button>
       <app-invoice-drawer></app-invoice-drawer>
       <app-ai-drawer></app-ai-drawer>
       <p-button (onClick)="logoutUser()"
