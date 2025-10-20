@@ -29,6 +29,7 @@ export const appConfig: ApplicationConfig = {
       theme: {
         preset: Nora,
         options: {
+          darkModeSelector: '.dark-theme',
           cssLayer: {
             name: 'primeng',
             order: 'theme, base, primeng',

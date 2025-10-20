@@ -18,6 +18,11 @@ export class Navbar {
   private router = inject(Router);
   private toastService = inject(ToastService);
 
+  toggleDarkMode() {
+    const element = document.querySelector('html');
+    element?.classList.toggle('dark-theme');
+  }
+
   logoutUser() {
     this.authService.logout().subscribe({
       next: (res) => {
