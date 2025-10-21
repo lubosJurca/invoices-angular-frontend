@@ -2,28 +2,26 @@
   <ng-template #start> <h2 class="font-bold text-3xl">Invoice</h2></ng-template>
   <ng-template #end>
     <p-drawer [(visible)]="visible" header="Drawer" position="right">
-      <ng-template #content>
-        <div class="flex flex-col gap-3">
-          <p-button (onClick)="toggleDarkMode()" styleClass="w-full">
-            @if( isDarkMode$ | async){
-            <span class="material-icons-outlined"> light_mode </span>
-            <span class="font-bold">Light Mode</span>
+      <div class="flex flex-col gap-3">
+        <p-button (onClick)="toggleDarkMode()" styleClass="w-full">
+          @if( isDarkMode$ | async){
+          <span class="material-icons-outlined"> light_mode </span>
+          <span class="font-bold">Light Mode</span>
 
-            }@else {
-            <span class="material-icons-outlined"> dark_mode </span>
-            <span class="font-bold">Dark Mode</span>
-            }
-          </p-button>
-          <app-invoice-drawer></app-invoice-drawer>
-          <app-ai-drawer></app-ai-drawer>
-          <p-button (onClick)="logoutUser()" styleClass="w-full"
-            ><span class="material-icons-outlined"> logout </span>
-            <span class="font-bold">Logout</span></p-button
-          >
-        </div>
-      </ng-template>
+          }@else {
+          <span class="material-icons-outlined"> dark_mode </span>
+          <span class="font-bold">Dark Mode</span>
+          }
+        </p-button>
+        <app-invoice-drawer></app-invoice-drawer>
+        <app-ai-drawer></app-ai-drawer>
+        <p-button (onClick)="logoutUser()" styleClass="w-full"
+          ><span class="material-icons-outlined"> logout </span>
+          <span class="font-bold">Logout</span></p-button
+        >
+      </div>
     </p-drawer>
-    <p-button (click)="visible = true">
+    <p-button (click)="visible = true" styleClass="md:hidden">
       <span class="material-icons-outlined"> menu </span>
     </p-button>
     <div class="align-items-center gap-2 hidden md:flex">
