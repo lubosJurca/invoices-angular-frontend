@@ -1,7 +1,7 @@
 <p-menubar>
   <ng-template #start> <h2 class="font-bold text-3xl">Invoice</h2></ng-template>
   <ng-template #end>
-    <p-popover #op>
+    <p-drawer [(visible)]="visible" header="Drawer" position="right">
       <ng-template #content>
         <div class="flex flex-col gap-3">
           <p-button (onClick)="toggleDarkMode()" styleClass="w-full">
@@ -22,13 +22,10 @@
           >
         </div>
       </ng-template>
-    </p-popover>
-    <p-button
-      (click)="op.toggle($event)"
-      icon="pi pi-cog"
-      label="Menu"
-    ></p-button>
-
+    </p-drawer>
+    <p-button (click)="visible = true">
+      <span class="material-icons-outlined"> menu </span>
+    </p-button>
     <div class="align-items-center gap-2 hidden md:flex">
       <p-button (onClick)="toggleDarkMode()">
         @if( isDarkMode$ | async){

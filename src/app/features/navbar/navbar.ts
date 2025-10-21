@@ -8,7 +8,7 @@ import { ToastService } from '../../shared/services/toast.service';
 import { AiDrawer } from '../ai-drawer/ai-drawer';
 import { InvoiceDrawer } from '../invoice-drawer/invoice-drawer';
 import { DarkTheme } from '../../shared/services/dark-theme.service';
-import { PopoverModule } from 'primeng/popover';
+import { DrawerModule } from 'primeng/drawer';
 
 @Component({
   selector: 'app-navbar',
@@ -18,7 +18,7 @@ import { PopoverModule } from 'primeng/popover';
     Button,
     AiDrawer,
     InvoiceDrawer,
-    PopoverModule,
+    DrawerModule,
   ],
   templateUrl: './navbar.html',
 })
@@ -27,6 +27,8 @@ export class Navbar {
   private router = inject(Router);
   private toastService = inject(ToastService);
   private darkTheme = inject(DarkTheme);
+
+  visible: boolean = false;
 
   toggleDarkMode() {
     this.darkTheme.toggleDarkMode();
