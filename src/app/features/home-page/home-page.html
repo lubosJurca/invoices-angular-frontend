@@ -64,6 +64,8 @@
         >
           <p-button
             (onClick)="loginAsTestUser()"
+            [loading]="isLoading"
+            [disabled]="isLoading"
             styleClass="bg-gradient-to-r w-64 sm:w-auto from-green-700 to-green-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 border-none"
           >
             Test for free

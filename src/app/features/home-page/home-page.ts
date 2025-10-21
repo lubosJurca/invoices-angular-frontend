@@ -16,7 +16,11 @@ export class HomePage {
   private toastService = inject(ToastService);
   private router = inject(Router);
 
+  public isLoading = false;
+
   public loginAsTestUser() {
+    this.isLoading = true;
+
     const email = 'test@test.com';
     const password = 'secret123';
     this.authService
@@ -27,10 +31,12 @@ export class HomePage {
           console.log('Successfully logged in');
           this.toastService.success(res.message);
           this.router.navigate(['/dashboard']);
+          this.isLoading = false;
         },
         error: (err) => {
           console.error('Error:', err.error.message);
           this.toastService.error(err.error.message || 'Unknown error');
+          this.isLoading = false;
         },
       });
   }
