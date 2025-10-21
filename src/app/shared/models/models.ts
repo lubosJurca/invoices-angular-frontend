@@ -46,3 +46,11 @@ export interface GetAllInvoicesResponse {
   data: Invoice[];
   message: string;
 }
+
+export type Severity =
+  | 'success'
+  | 'info'
+  | 'warn'
+  | 'danger'
+  | 'secondary'
+  | 'contrast';

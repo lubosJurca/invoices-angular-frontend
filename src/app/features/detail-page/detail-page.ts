@@ -7,7 +7,7 @@ import { TagModule } from 'primeng/tag';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { Observable, of, map } from 'rxjs';
-import { Invoice } from '../../shared/models/models';
+import { Invoice, Severity } from '../../shared/models/models';
 import { DataService } from '../../shared/services/data.service';
 import { ConfirmationService } from 'primeng/api';
 import { DeleteButton } from '../delete-button/delete-button';
@@ -63,8 +63,8 @@ export class DetailPage implements OnInit {
     this.router.navigate(['/dashboard']);
   }
 
-  getSeverity(status: string): string {
-    const severityMap: { [key: string]: string } = {
+  getSeverity(status: string): Severity {
+    const severityMap: { [key: string]: Severity } = {
       draft: 'warn',
       paid: 'success',
       pending: 'info',

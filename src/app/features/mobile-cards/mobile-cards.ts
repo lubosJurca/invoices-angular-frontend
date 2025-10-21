@@ -11,6 +11,7 @@ import {
 import { TagModule } from 'primeng/tag';
 import { AsyncPipe, DatePipe, CurrencyPipe } from '@angular/common';
 import { PaginatorState, PaginatorModule } from 'primeng/paginator';
+import { Severity } from '../../shared/models/models';
 
 @Component({
   selector: 'app-mobile-cards',
@@ -62,8 +63,8 @@ export class MobileCards {
   public filterStatus = this.dataService.filterStatus$;
   public loading = this.dataService.loading$;
 
-  getSeverity(status: string): string {
-    const severityMap: { [key: string]: string } = {
+  getSeverity(status: string): Severity {
+    const severityMap: { [key: string]: Severity } = {
       draft: 'warn',
       paid: 'success',
       pending: 'info',

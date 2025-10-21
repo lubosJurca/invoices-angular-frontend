@@ -5,6 +5,7 @@ import { DataService } from '../../shared/services/data.service';
 import { TagModule } from 'primeng/tag';
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
+import { Severity } from '../../shared/models/models';
 
 @Component({
   selector: 'app-main-table',
@@ -25,8 +26,8 @@ export class MainTable {
   public loading$ = this.dataService.loading$;
   public filterStatus$ = this.dataService.filterStatus$;
 
-  getSeverity(status: string): string {
-    const severityMap: { [key: string]: string } = {
+  getSeverity(status: string): Severity {
+    const severityMap: { [key: string]: Severity } = {
       draft: 'warn',
       paid: 'success',
       pending: 'info',
