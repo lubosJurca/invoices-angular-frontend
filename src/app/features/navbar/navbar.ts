@@ -40,7 +40,7 @@ export class Navbar {
     this.authService.logout().subscribe({
       next: (res) => {
         // Success - maybe redirect to login or show success message
-        this.router.navigate(['/login']);
+        this.router.navigate(['/']);
         this.toastService.success(res.message);
       },
       error: (error) => {
