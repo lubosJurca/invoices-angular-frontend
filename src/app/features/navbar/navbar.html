@@ -1,7 +1,7 @@
 <p-menubar>
   <ng-template #start> <h2 class="font-bold text-3xl">Invoice</h2></ng-template>
   <ng-template #end>
-    <p-drawer [(visible)]="visible" header="Drawer" position="right">
+    <p-drawer [(visible)]="visible" header="Menu" position="right">
       <div class="flex flex-col gap-3">
         <p-button (onClick)="toggleDarkMode()" styleClass="w-full">
           @if( isDarkMode$ | async){

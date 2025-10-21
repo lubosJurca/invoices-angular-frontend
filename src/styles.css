@@ -3,3 +3,19 @@
 @plugin "tailwindcss-primeui";
 @import "primeicons/primeicons.css";
 @custom-variant dark (&:where(.dark-theme, .dark-theme *));
+
+.icon-responsive {
+  font-size: 3rem;
+}
+
+@media (min-width: 640px) {
+  .icon-responsive {
+    font-size: 6rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .icon-responsive {
+    font-size: 8rem;
+  }
+}

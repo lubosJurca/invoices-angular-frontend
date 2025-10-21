@@ -1,11 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomePage } from './features/home-page/home-page';
 import { LoginPage } from './features/login-page/login-page';
-import { SignUpPage } from './features/sign-up-page/sign-up-page';
-import { Dashboard } from './features/dashboard/dashboard';
 import { authGuard } from './core/auth/auth-guard-guard';
-import { DetailPage } from './features/detail-page/detail-page';
-import { TablePage } from './features/table-page/table-page';
 
 export const routes: Routes = [
   {
@@ -20,27 +16,36 @@ export const routes: Routes = [
   },
   {
     path: 'sign-up',
-    component: SignUpPage,
+    loadComponent: () =>
+      import('./features/sign-up-page/sign-up-page').then((m) => m.SignUpPage),
     title: 'Sign Up',
   },
   {
     path: 'dashboard',
-    component: Dashboard,
+    loadComponent: () =>
+      import('./features/dashboard/dashboard').then((m) => m.Dashboard),
     title: 'Dashboard',
     canActivate: [authGuard],
     children: [
       {
         path: '',
-        component: TablePage,
+        loadComponent: () =>
+          import('./features/table-page/table-page').then((m) => m.TablePage),
       },
       {
         path: 'detail/:id',
-        component: DetailPage,
+        loadComponent: () =>
+          import('./features/detail-page/detail-page').then(
+            (m) => m.DetailPage
+          ),
       },
     ],
   },
   {
     path: '**',
-    redirectTo: '',
+    loadComponent: () =>
+      import('./features/not-found-page/not-found-page').then(
+        (m) => m.NotFoundPage
+      ),
   },
 ];
