@@ -6,6 +6,6 @@ const isProduction =
 export const environment = {
   production: isProduction,
   apiUrl: isProduction
-    ? 'https://your-backend.onrender.com/api' // ← Změníte po Render deploymentu
+    ? 'https://invoices-angular-backend.onrender.com/api' // ← Změníte po Render deploymentu
     : 'http://localhost:5100/api',
 };
