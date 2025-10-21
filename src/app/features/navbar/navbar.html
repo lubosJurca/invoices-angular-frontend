@@ -1,7 +1,35 @@
 <p-menubar>
   <ng-template #start> <h2 class="font-bold text-3xl">Invoice</h2></ng-template>
   <ng-template #end>
-    <div class="flex align-items-center gap-2">
+    <p-popover #op>
+      <ng-template #content>
+        <div class="flex flex-col gap-3">
+          <p-button (onClick)="toggleDarkMode()" styleClass="w-full">
+            @if( isDarkMode$ | async){
+            <span class="material-icons-outlined"> light_mode </span>
+            <span class="font-bold">Light Mode</span>
+
+            }@else {
+            <span class="material-icons-outlined"> dark_mode </span>
+            <span class="font-bold">Dark Mode</span>
+            }
+          </p-button>
+          <app-invoice-drawer></app-invoice-drawer>
+          <app-ai-drawer></app-ai-drawer>
+          <p-button (onClick)="logoutUser()" styleClass="w-full"
+            ><span class="material-icons-outlined"> logout </span>
+            <span class="font-bold">Logout</span></p-button
+          >
+        </div>
+      </ng-template>
+    </p-popover>
+    <p-button
+      (click)="op.toggle($event)"
+      icon="pi pi-cog"
+      label="Menu"
+    ></p-button>
+
+    <div class="align-items-center gap-2 hidden md:flex">
       <p-button (onClick)="toggleDarkMode()">
         @if( isDarkMode$ | async){
         <span class="material-icons-outlined"> dark_mode </span>

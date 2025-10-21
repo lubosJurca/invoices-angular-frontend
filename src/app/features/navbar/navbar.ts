@@ -8,10 +8,18 @@ import { ToastService } from '../../shared/services/toast.service';
 import { AiDrawer } from '../ai-drawer/ai-drawer';
 import { InvoiceDrawer } from '../invoice-drawer/invoice-drawer';
 import { DarkTheme } from '../../shared/services/dark-theme.service';
+import { PopoverModule } from 'primeng/popover';
 
 @Component({
   selector: 'app-navbar',
-  imports: [Menubar, CommonModule, Button, AiDrawer, InvoiceDrawer],
+  imports: [
+    Menubar,
+    CommonModule,
+    Button,
+    AiDrawer,
+    InvoiceDrawer,
+    PopoverModule,
+  ],
   templateUrl: './navbar.html',
 })
 export class Navbar {
