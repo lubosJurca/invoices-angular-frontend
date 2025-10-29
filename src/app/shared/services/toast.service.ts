@@ -14,4 +14,8 @@ export class ToastService {
   success(detail: string, summary = 'Success!') {
     this.messageService.add({ severity: 'success', summary, detail });
   }
+
+  info(detail: string, summary = 'Info') {
+    this.messageService.add({ severity: 'info', summary, detail });
+  }
 }

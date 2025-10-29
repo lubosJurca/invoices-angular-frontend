@@ -4,14 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
 import { FormsModule } from '@angular/forms';
 import { FloatLabel } from 'primeng/floatlabel';
-import {
-  BehaviorSubject,
-  finalize,
-  Observable,
-  of,
-  Subject,
-  takeUntil,
-} from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { AiAssistant } from '../../shared/services/ai-assistant.service';

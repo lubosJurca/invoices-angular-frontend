@@ -1,6 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  finalize,
+  map,
+  Observable,
+  of,
+  tap,
+} from 'rxjs';
 import { User } from '../../shared/models/models';
 import { environment } from '../../environments/enviroment';
 
@@ -19,8 +27,18 @@ interface LogoutResponse {
 })
 export class AuthService {
   private http = inject(HttpClient);
+
+  // User state
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
+
+  // Loading state
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+  public loading$ = this.loadingSubject.asObservable();
+
+  // Error state (volitelné, ale doporučuji)
+  private errorSubject = new BehaviorSubject<string | null>(null);
+  public error$ = this.errorSubject.asObservable();
 
   public initializeAuth(): Observable<boolean> {
     const token = this.getToken();
@@ -30,6 +48,9 @@ export class AuthService {
       this.currentUserSubject.next(null);
       return of(false);
     }
+
+    this.loadingSubject.next(true);
+    this.errorSubject.next(null);
 
     return this.http
       .get<AuthResponse>(environment.apiUrl + '/users/current-user', {
@@ -53,7 +74,8 @@ export class AuthService {
         catchError(() => {
           this.logout();
           return of(false);
-        })
+        }),
+        finalize(() => this.loadingSubject.next(false))
       );
   }
 
@@ -62,6 +84,9 @@ export class AuthService {
     email: string;
     password: string;
   }): Observable<any> {
+    this.loadingSubject.next(true);
+    this.errorSubject.next(null);
+
     return this.http
       .post<AuthResponse>(environment.apiUrl + '/users/register', user)
       .pipe(
@@ -70,11 +95,20 @@ export class AuthService {
             this.setToken(response.token);
             this.currentUserSubject.next(response.user);
           }
-        })
+        }),
+        catchError((error) => {
+          console.error('Registration error:', error);
+          this.errorSubject.next(error.error?.message || 'Registration failed');
+          throw error;
+        }),
+        finalize(() => this.loadingSubject.next(false))
       );
   }
 
   loginUser(user: { email: string; password: string }): Observable<any> {
+    this.loadingSubject.next(true);
+    this.errorSubject.next(null);
+
     return this.http
       .post<AuthResponse>(environment.apiUrl + '/auth/login', user)
       .pipe(
@@ -84,7 +118,13 @@ export class AuthService {
             this.currentUserSubject.next(response.user);
             console.log('User logged in successfully');
           }
-        })
+        }),
+        catchError((error) => {
+          console.error('Login error:', error);
+          this.errorSubject.next(error.error?.message || 'Login failed');
+          throw error; // Re-throw pro subscribe v komponentě
+        }),
+        finalize(() => this.loadingSubject.next(false))
       );
   }
 
@@ -93,6 +133,9 @@ export class AuthService {
   }
 
   logout(): Observable<LogoutResponse> {
+    this.loadingSubject.next(true);
+    this.errorSubject.next(null);
+
     return this.http
       .post<LogoutResponse>(
         environment.apiUrl + '/auth/logout',
@@ -104,7 +147,16 @@ export class AuthService {
           this.removeToken();
           this.currentUserSubject.next(null);
           console.log('User logged out successfully');
-        })
+        }),
+        catchError((error) => {
+          console.error('Logout error:', error);
+          this.errorSubject.next(error.error?.message || 'Logout failed');
+          // Logout lokálně i když API selže
+          this.removeToken();
+          this.currentUserSubject.next(null);
+          throw error;
+        }),
+        finalize(() => this.loadingSubject.next(false))
       );
   }
 
