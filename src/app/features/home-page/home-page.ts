@@ -41,7 +41,6 @@ export class HomePage {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (res) => {
-          console.log('Successfully logged in');
           this.toastService.success(res.message);
           this.router.navigate(['/dashboard']);
         },

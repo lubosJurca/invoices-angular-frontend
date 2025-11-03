@@ -98,7 +98,6 @@ export class DataService {
       )
       .pipe(
         tap((response) => {
-          console.log('Invoice created successfully');
           // Trigger a refresh of the invoice list
           this.refreshTrigger$.next(!this.refreshTrigger$.value);
         }),
@@ -156,9 +155,6 @@ export class DataService {
         headers: this.auth.getAuthHeaders(),
       })
       .pipe(
-        tap((response) => {
-          console.log('Invoice data fetched successfully');
-        }),
         catchError((error) => {
           console.error('HTTP Error:', error);
           throw error;

@@ -18,7 +18,6 @@ export class MainTable {
 
   public tableData$ = this.dataService.allInvoicesData$.pipe(
     map((data) => {
-      console.log('Table Data:', data);
       return data?.data || [];
     })
   );

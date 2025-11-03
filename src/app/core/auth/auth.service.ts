@@ -60,7 +60,6 @@ export class AuthService {
         tap({
           next: (response) => {
             this.currentUserSubject.next(response.user);
-            console.log('Token verified successfully');
           },
           error: (error) => {
             console.error('Token verification failed:', error);
@@ -116,7 +115,6 @@ export class AuthService {
           if (response.user && response.token) {
             this.setToken(response.token);
             this.currentUserSubject.next(response.user);
-            console.log('User logged in successfully');
           }
         }),
         catchError((error) => {
@@ -146,7 +144,6 @@ export class AuthService {
         tap((response) => {
           this.removeToken();
           this.currentUserSubject.next(null);
-          console.log('User logged out successfully');
         }),
         catchError((error) => {
           console.error('Logout error:', error);

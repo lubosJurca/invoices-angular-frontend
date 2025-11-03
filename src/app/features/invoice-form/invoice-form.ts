@@ -70,9 +70,7 @@ export class InvoiceForm implements OnChanges {
   });
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('Invoice items:', this.invoiceInput?.items);
     if (changes['invoiceInput'] && this.invoiceInput) {
-      console.log('Populating form with invoice:', this.invoiceInput);
       this.invoiceForm.patchValue({
         description: this.invoiceInput.description,
         dueDate: this.invoiceInput.dueDate

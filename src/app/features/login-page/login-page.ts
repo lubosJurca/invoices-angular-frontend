@@ -51,7 +51,6 @@ export class LoginPage {
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: (res) => {
-            console.log('Successfully logged in');
             this.toastService.success(res.message);
             this.loginForm.reset();
             this.router.navigate(['/dashboard']);

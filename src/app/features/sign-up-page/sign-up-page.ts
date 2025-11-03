@@ -63,7 +63,6 @@ export class SignUpPage {
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: (res) => {
-            console.log('Registered');
             this.toastService.success(res.message);
             this.registerForm.reset();
             this.router.navigate(['/dashboard']);
